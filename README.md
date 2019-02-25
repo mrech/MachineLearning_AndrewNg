@@ -11,3 +11,10 @@
     - Model and Cost Function
     - Parameter Learning
   - Linear Algebra Review
+    - *LinearAlgebra_NumPy.py*
+- **2. Linear Regression with Multiple Variables**
+  - Multivariate Linear Regression
+  - Computing Parameters Analytically
+  - Python Tutorial
+    - *BasicOperations.py*
+    
