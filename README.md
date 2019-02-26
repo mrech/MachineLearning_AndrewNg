@@ -18,4 +18,4 @@
   - Python Tutorial
     - *BasicOperations.py*
     - *MovingDataAround.py*
-    
+    - *ComputingOnData.py*
