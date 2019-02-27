@@ -24,10 +24,8 @@ B = np.array([[1, 3, 4], [1, 1, 1]])
 # Inizialize a constant s
 s = 2
 
-# See how element-wise addition works
+# See how element-wise addition/subtraction works
 add_AB = A + B
-
-# See how scalar multiplication works
 sub_AB = A - B
 
 # See how scalar multiplication works
