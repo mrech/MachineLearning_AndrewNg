@@ -20,3 +20,4 @@
     - *MovingDataAround.py*
     - *ComputingOnData.py*
     - *PlottingData.py*
+    - *CostFunction.py*
