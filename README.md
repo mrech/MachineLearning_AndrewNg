@@ -21,3 +21,10 @@
     - *ComputingOnData.py*
     - *PlottingData.py*
     - *CostFunction.py*
+  - Programming Excercise 1: Linear Regression
+    - ex1.pdf
+    - *ex1.py*
+    - *warmUpExercise.py*
+    - *plotData.py*
+    - *computeCost.py*
+    - *gradientDescent.py*
