@@ -24,8 +24,12 @@
   - Programming Excercise 1: Linear Regression
     - ex1.pdf
     - *ex1_ProgrammingAssignment.py*
+    - ex1data1.txt
     - *warmUpExercise.py*
     - *plotData.py*
     - *computeCost.py*
     - *gradientDescent.py*
     - *Cost_function.png*
+    - *ex1_OptionalAssignment.py*
+    - ex1data2.txt
+    - *featureNormalize.py*

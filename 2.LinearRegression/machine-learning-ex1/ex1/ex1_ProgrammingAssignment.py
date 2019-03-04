@@ -8,15 +8,6 @@ from computeCost import *
 from plotData import *
 from warmUpExercise import *
 
-'''
-
-    gradientDescentMulti.m
-    computeCostMulti.m
-    featureNormalize.m
-    normalEqn.m
-
-'''
-
 # ==================== Part 1: Basic Function ====================
 # Complete warmUpExercise.py
 print('\nRunning warmUpExercise ... \n')
