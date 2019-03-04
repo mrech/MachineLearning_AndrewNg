@@ -1,11 +1,12 @@
 # Machine Learning Online Class - Exercise 1: Linear Regression
-from warmUpExercise import *
-from plotData import *
-from computeCost import *
-from gradientDescent import *
-import pandas as pd
-import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gradientDescent import *
+from computeCost import *
+from plotData import *
+from warmUpExercise import *
 
 '''
 
@@ -96,39 +97,68 @@ print('For population = 70,000, we predict a profit of {}\n'.format(predict2*100
 
 print('Program paused. Press enter to continue.\n')
 
-'''
-%% ============= Part 4: Visualizing J(theta_0, theta_1) =============
-fprintf('Visualizing J(theta_0, theta_1) ...\n')
+# ============= Part 4: Visualizing J(theta_0, theta_1) =============
+print('Visualizing J(theta_0, theta_1)...\n')
 
-% Grid over which we will calculate J
-theta0_vals = linspace(-10, 10, 100);
-theta1_vals = linspace(-1, 4, 100);
+# Grid over which we will calculate J
+theta0_vals = np.linspace(-10, 10, 100)
+theta1_vals = np.linspace(-1, 4, 100)
 
-% initialize J_vals to a matrix of 0's
-J_vals = zeros(length(theta0_vals), length(theta1_vals));
+# initialize J_vals to a matrix of 0's
+J_vals = np.zeros((len(theta0_vals), len(theta1_vals)))
 
-% Fill out J_vals
-for i = 1:length(theta0_vals)
-    for j = 1:length(theta1_vals)
-	  t = [theta0_vals(i); theta1_vals(j)];
-	  J_vals(i,j) = computeCost(X, y, t);
-    end
-end
+# Fill out J_vals
+for i in range(len(theta0_vals)):
+    for j in range(len(theta1_vals)):
+        t = np.array([[theta0_vals[i]], [theta1_vals[j]]])
+        J_vals[i][j] = computeCost(X, y, t)
+
+# Because of the way meshgrids work in the surf command, we need to
+# transpose J_vals before calling surf, or else the axes will be flipped
+J_vals = J_vals.transpose()
+
+fig = plt.figure(figsize=plt.figaspect(0.3))
+
+# ==============
+# Surface Plot
+# ==============
+
+ax = fig.add_subplot(1, 2, 1, projection='3d')
+
+# Make data
+# return coordinate matrices from coordinate vectors
+theta0, theta1 = np.meshgrid(theta0_vals, theta1_vals)
+
+# Plot the surface
+surf = ax.plot_surface(theta0, theta1, J_vals, cmap=plt.cm.jet)
+
+# customize the z axis
+ax.set_zlim(0, 800)
+
+# labels and title
+plt.xlabel(r"$\theta_0$")
+plt.xticks(np.arange(min(theta0_vals), max(theta0_vals+1), 5.0))
+plt.ylabel(r"$\theta_1$")
+plt.title('(a) Surface')
+
+# ==============
+# Contour plot
+# ==============
+
+# Plot J_vals as 15 contours spaced logarithmically between 0.01 and 100
+ax = fig.add_subplot(1, 2, 2)
+cset = ax.contour(theta0_vals, theta1_vals, J_vals,
+                  np.logspace(-2, 3, 20))  # 10**-2, 10**3
+ax.clabel(cset, fontsize=9, inline=1)
+
+# labels and title
+plt.xlabel(r"$\theta_0$")
+plt.ylabel(r"$\theta_1$")
+plt.title('(b) Contour, showing minimum')
+
+# plot the minimum
+plt.plot(theta[0], theta[1], 'rx', linewidth=2, markersize=10)
 
 
-% Because of the way meshgrids work in the surf command, we need to
-% transpose J_vals before calling surf, or else the axes will be flipped
-J_vals = J_vals';
-% Surface plot
-figure;
-surf(theta0_vals, theta1_vals, J_vals)
-xlabel('\theta_0'); ylabel('\theta_1');
-
-% Contour plot
-figure;
-% Plot J_vals as 15 contours spaced logarithmically between 0.01 and 100
-contour(theta0_vals, theta1_vals, J_vals, logspace(-2, 3, 20))
-xlabel('\theta_0'); ylabel('\theta_1');
-hold on;
-plot(theta(1), theta(2), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-'''
+plt.savefig('Cost_function.png')
+plt.show()

@@ -23,8 +23,9 @@
     - *CostFunction.py*
   - Programming Excercise 1: Linear Regression
     - ex1.pdf
-    - *ex1.py*
+    - *ex1_ProgrammingAssignment.py*
     - *warmUpExercise.py*
     - *plotData.py*
     - *computeCost.py*
     - *gradientDescent.py*
+    - *Cost_function.png*
