@@ -12,6 +12,8 @@ def computeCost(X, y, theta):
     m = len(y)  # number of training examples
     prediction = X @ theta
     # successfully subtracting a vector from a matrix
-    sqrErrors = (prediction.transpose()-y).transpose()**2
+    # vectorized form of the cost function
+    sqrErrors = (prediction.transpose() -
+                 y) @ (prediction.transpose()-y).transpose()
 
-    return 1/(2*m) * np.sum(sqrErrors)
+    return 1/(2*m) * sqrErrors

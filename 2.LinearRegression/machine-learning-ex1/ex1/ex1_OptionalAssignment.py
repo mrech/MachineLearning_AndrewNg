@@ -1,19 +1,21 @@
-## Machine Learning Online Class
+# Machine Learning Online Class
 #  Exercise 1: Linear regression with multiple variables
 import pandas as pd
 import numpy as np
 from featureNormalize import *
+from gradientDescent import *
+from computeCost import *
 import os
 os.getcwd()
 os.chdir('/home/morena/MachineLearning/AndrewNg_Python/2.LinearRegression/machine-learning-ex1/ex1')
 
-## ================ Part 1: Feature Normalization ================
+# ================ Part 1: Feature Normalization ================
 print('Loading data ...\n')
 
 # Load Data
-data = pd.read_csv('ex1data2.txt',header=None)
+data = pd.read_csv('ex1data2.txt', header=None)
 
-X = data[[0,1]]
+X = data[[0, 1]]
 y = data[[2]]
 m = len(y)
 
@@ -32,43 +34,26 @@ print('House sizes are about 1000 times the number of bedrooms.\n')
 [X, mu, sigma] = featureNormalize(X)
 
 # Add a column of ones to X (intercept term)
-X = np.hstack((np.ones((m,1)), X))
+X = np.hstack((np.ones((m, 1)), X))
 
+# ================ Part 2: Gradient Descent ================
+
+print('Running gradient descent ...\n')
+
+# Choose some alpha value
+alpha = 0.01
+num_iters = 400
+
+# Init Theta and Run Gradient Descent
+theta = np.zeros((X.shape[1], 1))
+y = np.array(data[1])
+(theta, J_history) = gradientDescent(X, y, theta, alpha, num_iters)
 
 '''
-%% ================ Part 2: Gradient Descent ================
+Finally, you should complete the code at the end
+to predict the price of a 1650 sq-ft, 3 br house.
 
-% ====================== YOUR CODE HERE ======================
-% Instructions: We have provided you with the following starter
-%               code that runs gradient descent with a particular
-%               learning rate (alpha). 
-%
-%               Your task is to first make sure that your functions - 
-%               computeCost and gradientDescent already work with 
-%               this starter code and support multiple variables.
-%
-%               After that, try running gradient descent with 
-%               different values of alpha and see which one gives
-%               you the best result.
-%
-%               Finally, you should complete the code at the end
-%               to predict the price of a 1650 sq-ft, 3 br house.
-%
-% Hint: By using the 'hold on' command, you can plot multiple
-%       graphs on the same figure.
-%
-% Hint: At prediction, make sure you do the same feature normalization.
-%
-
-fprintf('Running gradient descent ...\n');
-
-% Choose some alpha value
-alpha = 0.01;
-num_iters = 400;
-
-% Init Theta and Run Gradient Descent 
-theta = zeros(3, 1);
-[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+Hint: At prediction, make sure you do the same feature normalization.
 
 % Plot the convergence graph
 figure;
