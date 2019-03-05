@@ -2,6 +2,7 @@
 #  Exercise 1: Linear regression with multiple variables
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from featureNormalize import *
 from gradientDescent import *
 from computeCost import *
@@ -41,46 +42,72 @@ X = np.hstack((np.ones((m, 1)), X))
 print('Running gradient descent ...\n')
 
 # Choose some alpha value
-alpha = 0.01
-num_iters = 400
+'''
+trying values of the learning rate α on a log-scale, at multiplicative
+steps of about 3 times the previous value (i.e., 0.3, 0.1, 0.03, 0.01 and so on).
+'''
 
+# Initiate list where to store the cost function for different alpha
+J_history_alpha = []
+
+for alpha in [0.3, 0.1, 0.03, 0.01]:
+
+    num_iters = 50
+    # Init Theta and Run Gradient Descent
+    theta = np.zeros((X.shape[1], 1))
+    y = np.array(data[1])
+    (theta, J_history) = gradientDescent(X, y, theta, alpha, num_iters)
+    J_history_alpha.append(J_history)
+
+
+# Plot the convergence graph
+plt.plot(range(num_iters), J_history_alpha[0]*10**10, 'g', label='alpha = 0.3')
+plt.plot(range(num_iters), J_history_alpha[1]*10**10, 'b', label='alpha = 0.1')
+plt.plot(range(num_iters),
+         J_history_alpha[2]*10**10, 'r', label='alpha = 0.03')
+plt.plot(range(num_iters),
+         J_history_alpha[3]*10**10, 'k', label='alpha = 0.01')
+plt.xlabel('Number of iterations')
+plt.ylabel('Cost J')
+plt.title('Convergence of gradient descent with an appropriate learning rate', y=1.05)
+plt.legend()
+plt.savefig('CovergenceGraph.png')
+plt.show()
+
+# Using the learning rate 0.1
+alpha = 0.1
+num_iters = 50
 # Init Theta and Run Gradient Descent
 theta = np.zeros((X.shape[1], 1))
 y = np.array(data[1])
 (theta, J_history) = gradientDescent(X, y, theta, alpha, num_iters)
 
+# Display gradient descent's result
+print('Theta computed from gradient descent: \n')
+print(f'{theta}\n')
+print('\n')
+
+# Estimate the price of a 1650 sq-ft, 3 br house
+# Hint: At prediction, make sure you do the same feature normalization.
+
+X_Test = np.array([1650, 3])
+
+# Normalize
+X_Test = (X_Test-mu)/sigma
+X_Test = np.array(X_Test).reshape(1, len(X_Test))
+
+# Add first column of all-ones
+X_Test = np.hstack((np.ones((X_Test.shape[0], 1)), X_Test))
+
+# Prediction
+price = X_Test @ theta
+print(f"""Predicted price of a 1650 sq-ft, 3 br house
+(using gradient descent):\n{price}\n""")
+
+print('Program paused. Press enter to continue.\n')
+
+
 '''
-Finally, you should complete the code at the end
-to predict the price of a 1650 sq-ft, 3 br house.
-
-Hint: At prediction, make sure you do the same feature normalization.
-
-% Plot the convergence graph
-figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
-xlabel('Number of iterations');
-ylabel('Cost J');
-
-% Display gradient descent's result
-fprintf('Theta computed from gradient descent: \n');
-fprintf(' %f \n', theta);
-fprintf('\n');
-
-% Estimate the price of a 1650 sq-ft, 3 br house
-% ====================== YOUR CODE HERE ======================
-% Recall that the first column of X is all-ones. Thus, it does
-% not need to be normalized.
-price = 0; % You should change this
-
-
-% ============================================================
-
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
-         '(using gradient descent):\n $%f\n'], price);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% ================ Part 3: Normal Equations ================
 
 fprintf('Solving with normal equations...\n');
