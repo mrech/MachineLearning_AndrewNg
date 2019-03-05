@@ -20,6 +20,7 @@
     - *MovingDataAround.py*
     - *ComputingOnData.py*
     - *PlottingData.py*
+    - My_plot.png
     - *CostFunction.py*
   - Programming Excercise 1: Linear Regression
     - ex1.pdf
@@ -29,7 +30,8 @@
     - *plotData.py*
     - *computeCost.py*
     - *gradientDescent.py*
-    - *Cost_function.png*
+    - Cost_function.png
     - *ex1_OptionalAssignment.py*
     - ex1data2.txt
     - *featureNormalize.py*
+    - CovergenceGraph.png
