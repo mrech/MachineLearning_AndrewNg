@@ -3,3 +3,9 @@
 2.LinearRegression/machine-learning-ex1/ex1/__pycache__/plotData.cpython-36.pyc
 2.LinearRegression/machine-learning-ex1/ex1/__pycache__/warmUpExercise.cpython-36.pyc
 2.LinearRegression/machine-learning-ex1/ex1/__pycache__/featureNormalize.cpython-36.pyc
+__pycache__/computeCost.cpython-36.pyc
+__pycache__/featureNormalize.cpython-36.pyc
+__pycache__/gradientDescent.cpython-36.pyc
+__pycache__/normalEqn.cpython-36.pyc
+__pycache__/plotData.cpython-36.pyc
+__pycache__/warmUpExercise.cpython-36.pyc

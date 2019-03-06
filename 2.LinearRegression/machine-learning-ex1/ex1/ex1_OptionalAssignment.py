@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from featureNormalize import *
 from gradientDescent import *
 from computeCost import *
+from normalEqn import *
 import os
-os.getcwd()
 os.chdir('/home/morena/MachineLearning/AndrewNg_Python/2.LinearRegression/machine-learning-ex1/ex1')
 
 # ================ Part 1: Feature Normalization ================
@@ -22,7 +22,8 @@ m = len(y)
 
 # Print out some data points
 print('First 10 examples from the dataset: \n')
-print("X ={},\n\ny ={}".format(X.head(11), y[0:11]))
+for i in range(10):
+    print(" X = [%i, %i], y = %i " % (X[0][i], X[1][i], y[2][i]))
 
 
 input('\nProgram paused. Press enter to continue.\n')
@@ -32,10 +33,10 @@ input('\nProgram paused. Press enter to continue.\n')
 print('\nNormalizing Features ...')
 print('House sizes are about 1000 times the number of bedrooms.\n')
 
-[X, mu, sigma] = featureNormalize(X)
+[X_norm, mu, sigma] = featureNormalize(X)
 
 # Add a column of ones to X (intercept term)
-X = np.hstack((np.ones((m, 1)), X))
+X_norm = np.hstack((np.ones((m, 1)), X_norm))
 
 # ================ Part 2: Gradient Descent ================
 
@@ -48,39 +49,40 @@ steps of about 3 times the previous value (i.e., 0.3, 0.1, 0.03, 0.01 and so on)
 '''
 
 # Initiate list where to store the cost function for different alpha
+num_iters = 50
 J_history_alpha = []
 
-for alpha in [0.3, 0.1, 0.03, 0.01]:
+alpha = [0.3, 0.1, 0.03, 0.01]
+colors = ['k', 'r', 'g', 'b']
 
-    num_iters = 50
+for i in alpha:
+
     # Init Theta and Run Gradient Descent
-    theta = np.zeros((X.shape[1], 1))
-    y = np.array(data[1])
-    (theta, J_history) = gradientDescent(X, y, theta, alpha, num_iters)
+    theta = np.zeros((X_norm.shape[1], 1))
+    y = np.array(data[2])
+    (theta, J_history) = gradientDescent(X_norm, y, theta, i, num_iters)
     J_history_alpha.append(J_history)
 
-
 # Plot the convergence graph
-plt.plot(range(num_iters), J_history_alpha[0]*10**10, 'g', label='alpha = 0.3')
-plt.plot(range(num_iters), J_history_alpha[1]*10**10, 'b', label='alpha = 0.1')
-plt.plot(range(num_iters),
-         J_history_alpha[2]*10**10, 'r', label='alpha = 0.03')
-plt.plot(range(num_iters),
-         J_history_alpha[3]*10**10, 'k', label='alpha = 0.01')
+j = len(colors)
+for j, colors in enumerate(colors):
+    plt.plot(J_history_alpha[j], color=colors, label=r'$\alpha = %.2f$' % alpha[j])
+
 plt.xlabel('Number of iterations')
 plt.ylabel('Cost J')
 plt.title('Convergence of gradient descent with an appropriate learning rate', y=1.05)
 plt.legend()
+plt.xticks(range(0, 51, 5))
 plt.savefig('CovergenceGraph.png')
 plt.show()
 
 # Using the learning rate 0.1
 alpha = 0.1
-num_iters = 50
+num_iters = 5000
 # Init Theta and Run Gradient Descent
-theta = np.zeros((X.shape[1], 1))
-y = np.array(data[1])
-(theta, J_history) = gradientDescent(X, y, theta, alpha, num_iters)
+theta = np.zeros((X_norm.shape[1], 1))
+y = np.array(data[2])
+(theta, J_history) = gradientDescent(X_norm, y, theta, alpha, num_iters)
 
 # Display gradient descent's result
 print('Theta computed from gradient descent: \n')
@@ -104,50 +106,42 @@ price = X_Test @ theta
 print(f"""Predicted price of a 1650 sq-ft, 3 br house
 (using gradient descent):\n{price}\n""")
 
-print('Program paused. Press enter to continue.\n')
+input('Program paused. Press enter to continue.\n')
 
+# ================ Part 3: Normal Equations ================
 
-'''
-%% ================ Part 3: Normal Equations ================
+print('Solving with normal equations...\n')
 
-fprintf('Solving with normal equations...\n');
+# Load Data
 
-% ====================== YOUR CODE HERE ======================
-% Instructions: The following code computes the closed form 
-%               solution for linear regression using the normal
-%               equations. You should complete the code in 
-%               normalEqn.m
-%
-%               After doing so, you should complete this code 
-%               to predict the price of a 1650 sq-ft, 3 br house.
-%
+data = pd.read_csv('ex1data2.txt', header=None)
 
-%% Load Data
-data = csvread('ex1data2.txt');
-X = data(:, 1:2);
-y = data(:, 3);
-m = length(y);
+X = data[[0, 1]]
+y = data[[2]]
+m = len(y)
 
-% Add intercept term to X
-X = [ones(m, 1) X];
+# Add intercept term to X
 
-% Calculate the parameters from the normal equation
-theta = normalEqn(X, y);
+X = np.hstack((np.ones((m, 1)), X))
 
-% Display normal equation's result
-fprintf('Theta computed from the normal equations: \n');
-fprintf(' %f \n', theta);
-fprintf('\n');
+# Calculate the parameters from the normal equation
+theta = normalEqn(X, y)
 
+# Display normal equation's result
 
-% Estimate the price of a 1650 sq-ft, 3 br house
-% ====================== YOUR CODE HERE ======================
-price = 0; % You should change this
+print('Theta computed from the normal equations: \n')
+print(f'{theta}\n')
+print('\n')
 
+# Estimate the price of a 1650 sq-ft, 3 br house
+X_Test = np.array([1650, 3])
+X_Test = np.array(X_Test).reshape(1, len(X_Test))
 
-% ============================================================
+# Add first column of all-ones
+X_Test = np.hstack((np.ones((X_Test.shape[0], 1)), X_Test))
 
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
-         '(using normal equations):\n $%f\n'], price);
+# Prediction
+price = X_Test @ theta
 
-'''
+print(f'''Predicted price of a 1650 sq-ft, 3 br house 
+(using normal equations):\n {price}\n''')

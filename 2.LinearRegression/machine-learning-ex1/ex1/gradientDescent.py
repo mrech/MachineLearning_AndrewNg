@@ -13,8 +13,8 @@ def gradientDescent(X, y, theta, alpha, num_iters):
     m = len(y)  # number of training examples
     J_history = np.zeros((num_iters, 1))
 
-    for iter in range(num_iters):
-
+    for iter in range(num_iters+1):
+        
         hypothesis = X @ theta
         delta = 1/m * ((hypothesis.transpose()-y) @ X)
 

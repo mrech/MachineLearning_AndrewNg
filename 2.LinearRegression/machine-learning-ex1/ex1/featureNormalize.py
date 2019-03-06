@@ -11,12 +11,9 @@ def featureNormalize(X):
     feature is 0 and the standard deviation is 1.
     '''
 
-    X_norm = X[:]  # Clone
-    mu = np.mean(X)
-    sigma = np.std(X)
-
-    for i in range(X.shape[1]):
-        X_norm[i] = (X[i] - mu[i])/sigma[i]
+    mu = X.mean()
+    sigma = X.std()
+    X_norm = (X - mu)/sigma
 
     return X_norm, mu, sigma
 
