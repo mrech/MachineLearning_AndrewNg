@@ -35,3 +35,4 @@
     - ex1data2.txt
     - *featureNormalize.py*
     - CovergenceGraph.png
+    - *normalEqn.py*
