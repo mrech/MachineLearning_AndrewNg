@@ -36,3 +36,4 @@
     - *featureNormalize.py*
     - CovergenceGraph.png
     - *normalEqn.py*
+    - *test.py*

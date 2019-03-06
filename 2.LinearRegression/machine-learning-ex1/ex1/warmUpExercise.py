@@ -6,5 +6,5 @@ def warmUpExercise(n):
     '''
     Returns 5x5 identity matrix
     '''
-    A = np.identity(n)
-    return print(A)
+
+    return np.identity(n)
