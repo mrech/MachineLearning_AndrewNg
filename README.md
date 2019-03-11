@@ -37,4 +37,4 @@
     - CovergenceGraph.png
     - *normalEqn.py*
     - *test.py*
-    **3. Classification: Logistic Regression**
+- **3. Classification: Logistic Regression**
