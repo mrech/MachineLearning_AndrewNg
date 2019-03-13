@@ -22,7 +22,7 @@
     - *PlottingData.py*
     - My_plot.png
     - *CostFunction.py*
-  - Programming Excercise 1: Linear Regression
+  - Programming Assignment: Linear Regression
     - ex1.pdf
     - *ex1_ProgrammingAssignment.py*
     - ex1data1.txt
@@ -38,3 +38,16 @@
     - *normalEqn.py*
     - *test.py*
 - **3. Classification: Logistic Regression**
+  - Classification and Representation
+  - Logistic Regression Model
+  - Multiclass Classification
+  - Regularization
+  - Programming Assignment: Logistic Regression
+    - ex1.pdf
+    - *ex2.py*
+    - ex2data1.txt
+    - *plotData.py*
+    - *costFunction.py*
+    - *sigmoid.py*
+    - *plotDecisionBoundary.py*
+
