@@ -117,3 +117,63 @@ p = predict(theta, X)
 
 print('Train Accuracy: %.1f\n' % (np.mean(p == y) * 100))
 print('Expected accuracy (with lambda = 1): 83.1 (approx)\n')
+
+# ============= Optional exercises =============
+'''
+With a small λ (λ = 0), 
+you should find that the classifier gets almost every training example
+correct, but draws a very complicated boundary, thus overfitting the data
+'''
+
+# Initialize fitting parameters
+initial_theta = np.zeros((X.shape[1]))
+
+# Set regularization parameter lambda to 1 (you should vary this)
+RegParam = 0
+
+# Optimize
+output = minimize(costFunctionReg, initial_theta, args=(
+    X, y, RegParam), method='bfgs', jac=True, options={'maxiter': 400})
+
+theta = output.x
+J = output.fun
+exit_flag = output.message
+
+# Plot Boundary
+plotDecisionBoundary(theta, X, y)
+plt.title(f'lamda = {RegParam}')
+# Labels and Legend
+plt.xlabel('Microchip Test 1')
+plt.ylabel('Microchip Test 2')
+# plt.gca() to access the Axes instance
+plt.gca().legend(('y = 1 - Accepted ', 'y = 0 - Rejected', 'Decision boundary'))
+plt.show()
+
+'''
+How-ever, if λ is set to too high a value, you will not get a good fit and the decision
+boundary will not follow the data so well, thus underfitting the data
+'''
+
+# Initialize fitting parameters
+initial_theta = np.zeros((X.shape[1]))
+
+# Set regularization parameter lambda to 1 (you should vary this)
+RegParam = 100
+
+# Optimize
+output = minimize(costFunctionReg, initial_theta, args=(
+    X, y, RegParam), method='bfgs', jac=True, options={'maxiter': 400})
+
+theta = output.x
+J = output.fun
+exit_flag = output.message
+
+# Plot Boundary
+plotDecisionBoundary(theta, X, y)
+plt.title(f'lamda = {RegParam}')
+# Labels and Legend
+plt.xlabel('Microchip Test 1')
+plt.ylabel('Microchip Test 2')
+# plt.gca() to access the Axes instance
+plt.gca().legend(('y = 1 - Accepted ', 'y = 0 - Rejected', 'Decision boundary'))
+plt.show()
