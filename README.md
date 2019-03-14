@@ -50,4 +50,9 @@
     - *costFunction.py*
     - *sigmoid.py*
     - *plotDecisionBoundary.py*
+    - *predict.py*
+    - *ex2_reg.py*
+    - ex2data2.txt
+    - *mapFeature.py*
+    - *costFunctionReg.py*
 

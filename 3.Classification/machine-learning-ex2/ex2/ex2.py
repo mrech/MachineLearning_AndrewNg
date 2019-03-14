@@ -1,15 +1,13 @@
+# Machine Learning Online Class - Exercise 2: Logistic Regression
+
 from scipy.optimize import minimize
 from costFunction import *
 from plotData import *
 from plotDecisionBoundary import *
+from predict import *
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import os
-os.chdir('/home/morena/MachineLearning/AndrewNg_Python/3.Classification/machine-learning-ex2/ex2')
-
-# Machine Learning Online Class - Exercise 2: Logistic Regression
-
 
 # Load Data
 data = pd.read_csv('ex2data1.txt', header=None)
@@ -23,7 +21,8 @@ y = data.iloc[:, 2]
 # We start the exercise by first plotting the data to understand the
 # the problem we are working with.
 
-print('Plotting data with + indicating (y = 1) examples and o indicating (y = 0) examples.\n')
+print('Plotting data with + indicating (y = 1) examples')
+print('and o indicating (y = 0) examples.\n')
 
 plotData(X, y)
 plt.show()
@@ -88,51 +87,31 @@ for i in range(n+1):
 print('Expected theta (approx):\n')
 print(' -25.161\n 0.206\n 0.201\n')
 
-theta = list(output.x)
+theta = output.x
 
 # Plot Boundary
 plotDecisionBoundary(theta, X, y)
 plt.show()
 
+input('\nProgram paused. Press enter to continue.\n')
 
-
+# ============== Part 4: Predict and Accuracies ==============
 '''
-% Put some labels 
-hold on;
-% Labels and Legend
-xlabel('Exam 1 score')
-ylabel('Exam 2 score')
-
-% Specified in plot order
-legend('Admitted', 'Not admitted')
-hold off;
-
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
-
-%% ============== Part 4: Predict and Accuracies ==============
-%  After learning the parameters, you'll like to use it to predict the outcomes
-%  on unseen data. In this part, you will use the logistic regression model
-%  to predict the probability that a student with score 45 on exam 1 and 
-%  score 85 on exam 2 will be admitted.
-%
-%  Furthermore, you will compute the training and test set accuracies of 
-%  our model.
-%
-%  Your task is to complete the code in predict.m
-
-%  Predict probability for a student with score 45 on exam 1 
-%  and score 85 on exam 2 
-
-prob = sigmoid([1 45 85] * theta);
-fprintf(['For a student with scores 45 and 85, we predict an admission ' ...
-         'probability of %f\n'], prob);
-fprintf('Expected value: 0.775 +/- 0.002\n\n');
-
-% Compute accuracy on our training set
-p = predict(theta, X);
-
-fprintf('Train Accuracy: %f\n', mean(double(p == y)) * 100);
-fprintf('Expected accuracy (approx): 89.0\n');
-fprintf('\n');
+After learning the parameters, you'll like to use it to predict the outcomes
+on unseen data. In this part, you will use the logistic regression model
+to predict the probability that a student with score 45 on exam 1 and 
+score 85 on exam 2 will be admitted.
 '''
+
+prob = sigmoid(np.dot(np.array([1, 45, 85]), theta.reshape((n+1, 1))))
+
+print('For a student with scores 45 and 85,')
+print(f'we predict an admission probability of {float(prob)}\n')
+print('Expected value: 0.775 +/- 0.002\n\n')
+
+# Compute accuracy on our training set
+p = predict(theta, X)
+
+print('Train Accuracy: %.2f\n' % (np.mean(p == y) * 100))
+print('Expected accuracy (approx): 89.0\n')
+print('\n')

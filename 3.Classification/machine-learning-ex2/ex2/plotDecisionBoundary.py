@@ -21,7 +21,7 @@ def plotDecisionBoundary(theta, X, y):
         # Only need 2 points to define a line, so choose two endpoints
         plot_x = np.array([min(X[1])-2,  max(X[1])+2])
 
-        # Calculate the decision boundary line
+        # Calculate the decision boundary line: theta0 + theta1X1 + theta2X2 = 0
         plot_y = (-1/theta[2])*(theta[0]+(theta[1]*plot_x))
 
         # Plot, and adjust axes for better viewing
@@ -32,16 +32,23 @@ def plotDecisionBoundary(theta, X, y):
         # Legend, specific for the exercise
         plt.legend()
 
+    else:
+        pass
+
 
 '''
+    else: # when decision boundary is more than a line
+        # Here is the grid range
+        u = np.linspace(-1, 1.5, 50)
+        v = np.linspace(-1, 1.5, 50)
 
-else
-    % Here is the grid range
-    u = linspace(-1, 1.5, 50);
-    v = linspace(-1, 1.5, 50);
+        z = np.zeros((len(u), len(v)))
+        # Evaluate z = theta*x over the grid
 
-    z = zeros(length(u), length(v));
-    % Evaluate z = theta*x over the grid
+        for i in len(u):
+            for j in len(v):
+                z[i,j]= mapFeature(u[i], v[j])*theta
+    
     for i = 1:length(u)
         for j = 1:length(v)
             z(i,j) = mapFeature(u(i), v(j))*theta;
