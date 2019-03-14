@@ -18,7 +18,11 @@ def mapFeature(X1, X2):
     degree = 6
 
     # add the intercept term using DataFrame
-    out = pd.DataFrame(1, index=np.arange(len(X1)), columns=['0'])
+    try:
+        out = pd.DataFrame(1, index=np.arange(len(X1)), columns=['0'])
+    except TypeError:
+        out = pd.DataFrame(1, index=np.arange(1), columns=['0'])
+
 
     for i in range(1, degree+1):
         for j in range(i+1):

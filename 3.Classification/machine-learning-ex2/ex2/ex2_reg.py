@@ -2,8 +2,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.optimize import minimize
 from plotData import *
-from mapFeatrue import *
+from mapFeature import *
+from costFunctionReg import *
+from plotDecisionBoundary import *
+from predict import *
 import os
 os.chdir('/home/morena/MachineLearning/AndrewNg_Python/3.Classification/machine-learning-ex2/ex2')
 
@@ -38,82 +42,78 @@ regression).
 # Add Polynomial Features
 X = mapFeature(X.iloc[:, 0], X.iloc[:, 1])
 
-'''
-% Initialize fitting parameters
-initial_theta = zeros(size(X, 2), 1);
+# Initialize fitting parameters
+initial_theta = np.zeros((X.shape[1]))
 
-% Set regularization parameter lambda to 1
-lambda = 1;
+# Set regularization parameter lambda to 1
+RegParam = 1
 
-% Compute and display initial cost and gradient for regularized logistic
-% regression
-[cost, grad] = costFunctionReg(initial_theta, X, y, lambda);
+# Compute and display initial cost and gradient for regularized logistic
+# regression
+[cost, grad] = costFunctionReg(initial_theta, X, y, RegParam)
 
-fprintf('Cost at initial theta (zeros): %f\n', cost);
-fprintf('Expected cost (approx): 0.693\n');
-fprintf('Gradient at initial theta (zeros) - first five values only:\n');
-fprintf(' %f \n', grad(1:5));
-fprintf('Expected gradients (approx) - first five values only:\n');
-fprintf(' 0.0085\n 0.0188\n 0.0001\n 0.0503\n 0.0115\n');
+print('Cost at initial theta (zeros): %f\n' % cost)
+print('Expected cost (approx): 0.693\n')
 
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
+print('Gradient at initial theta (zeros) - first five values only:\n')
+for i in range(5):
+    print('gradient_%i: %.4f' % (i+1, grad[i]))
 
-% Compute and display cost and gradient
-% with all-ones theta and lambda = 10
-test_theta = ones(size(X,2),1);
-[cost, grad] = costFunctionReg(test_theta, X, y, 10);
+print('\nExpected gradients (approx) - first five values only:\n')
+print('0.0085\n0.0188\n0.0001\n0.0503\n0.0115\n')
 
-fprintf('\nCost at test theta (with lambda = 10): %f\n', cost);
-fprintf('Expected cost (approx): 3.16\n');
-fprintf('Gradient at test theta - first five values only:\n');
-fprintf(' %f \n', grad(1:5));
-fprintf('Expected gradients (approx) - first five values only:\n');
-fprintf(' 0.3460\n 0.1614\n 0.1948\n 0.2269\n 0.0922\n');
+input('\nProgram paused. Press enter to continue.\n')
 
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
+# Compute and display cost and gradient
+# with all-ones theta and lambda (RegParam) = 10
+test_theta = np.ones((X.shape[1]))
 
-%% ============= Part 2: Regularization and Accuracies =============
-%  Optional Exercise:
-%  In this part, you will get to try different values of lambda and
-%  see how regularization affects the decision coundart
-%
-%  Try the following values of lambda (0, 1, 10, 100).
-%
-%  How does the decision boundary change when you vary lambda? How does
-%  the training set accuracy vary?
-%
+[cost, grad] = costFunctionReg(test_theta, X, y, 10)
 
-% Initialize fitting parameters
-initial_theta = zeros(size(X, 2), 1);
+print('\nCost at test theta (with lambda = 10): %f\n' % cost)
+print('Expected cost (approx): 3.16\n')
 
-% Set regularization parameter lambda to 1 (you should vary this)
-lambda = 1;
+print('Gradient at test theta - first five values only:\n')
+for i in range(5):
+    print('gradient_%i: %.4f' % (i+1, grad[i]))
 
-% Set Options
-options = optimset('GradObj', 'on', 'MaxIter', 400);
+print('Expected gradients (approx) - first five values only:\n')
+print('0.3460\n0.1614\n0.1948\n0.2269\n0.0922\n')
 
-% Optimize
-[theta, J, exit_flag] = ...
-	fminunc(@(t)(costFunctionReg(t, X, y, lambda)), initial_theta, options);
+input('\nProgram paused. Press enter to continue.\n')
 
-% Plot Boundary
-plotDecisionBoundary(theta, X, y);
-hold on;
-title(sprintf('lambda = %g', lambda))
+# ============= Part 2: Regularization ainitial_theta = np.zeros((X.shape[1]))nd Accuracies =============
+#  How does the decision boundary change when you vary lambda? How does
+#  the training set accuracy vary?
 
-% Labels and Legend
-xlabel('Microchip Test 1')
-ylabel('Microchip Test 2')
+#  Try the following values of lambda (0, 1, 10, 100).
 
-legend('y = 1', 'y = 0', 'Decision boundary')
-hold off;
+# Initialize fitting parameters
+initial_theta = np.zeros((X.shape[1]))
 
-% Compute accuracy on our training set
-p = predict(theta, X);
+# Set regularization parameter lambda to 1 (you should vary this)
+RegParam = 1
 
-fprintf('Train Accuracy: %f\n', mean(double(p == y)) * 100);
-fprintf('Expected accuracy (with lambda = 1): 83.1 (approx)\n');
+# Optimize
+output = minimize(costFunctionReg, initial_theta, args=(
+    X, y, RegParam), method='bfgs', jac=True, options={'maxiter': 400})
 
-'''
+theta = output.x
+J = output.fun
+exit_flag = output.message
+
+# Plot Boundary
+plotDecisionBoundary(theta, X, y)
+plt.title(f'lamda = {RegParam}')
+# Labels and Legend
+plt.xlabel('Microchip Test 1')
+plt.ylabel('Microchip Test 2')
+# plt.gca() to access the Axes instance
+plt.gca().legend(('y = 1 - Accepted ', 'y = 0 - Rejected', 'Decision boundary'))
+plt.show()
+
+# Compute accuracy on our training set
+p = predict(theta, X)
+
+print('Train Accuracy: %.1f\n' % (np.mean(p == y) * 100))
+print('Expected accuracy (with lambda = 1): 83.1 (approx)\n')

@@ -1,6 +1,7 @@
 # Plots the data points X and y into a new figure with
 # the decision boundary defined by theta
 from plotData import *
+from mapFeature import *
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -32,32 +33,24 @@ def plotDecisionBoundary(theta, X, y):
         # Legend, specific for the exercise
         plt.legend()
 
+    # plots non-linear decision boundary
     else:
-        pass
-
-
-'''
-    else: # when decision boundary is more than a line
-        # Here is the grid range
+        # Create an evenly spaced grid (0 >= predictions <= 1)
         u = np.linspace(-1, 1.5, 50)
         v = np.linspace(-1, 1.5, 50)
-
+        # Classifier predictions: initiate
         z = np.zeros((len(u), len(v)))
         # Evaluate z = theta*x over the grid
+        theta = theta.reshape((theta.shape[0], 1))
+        for i in range(len(u)):
+            for j in range(len(v)):
+                z[i, j] = np.dot(mapFeature(u[i], v[j]), theta)
+        # important to transpose z before calling contour
+        z = np.transpose(z)
 
-        for i in len(u):
-            for j in len(v):
-                z[i,j]= mapFeature(u[i], v[j])*theta
-    
-    for i = 1:length(u)
-        for j = 1:length(v)
-            z(i,j) = mapFeature(u(i), v(j))*theta;
-        end
-    end
-    z = z'; % important to transpose z before calling contour
-
-    % Plot z = 0
-    % Notice you need to specify the range [0, 0]
-    contour(u, v, z, [0, 0], 'LineWidth', 2)
-
-'''
+        # Plot z = 0
+        # Notice you need to specify the range [0, 0]
+        CS = plt.contour(u, v, z, 0, colors='b', linewidths=2)
+        labels = ['Decision Boundary']
+        for i in range(len(labels)):
+            CS.collections[i].set_label(labels[i])

@@ -51,7 +51,7 @@ print(f'Cost at initial theta (zeros): {float(cost)}')
 print('Expected cost (approx): 0.693\n')
 print('Gradient at initial theta (zeros):')
 for i in range(n+1):
-    print(" grad%i = %f" % (i, grad[i]))
+    print("grad%i = %f" % (i, grad[i]))
 
 print('Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n')
 

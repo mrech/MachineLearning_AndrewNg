@@ -1,4 +1,5 @@
 # Compute cost and gradient for logistic regression with regularization
+from sigmoid import *
 
 
 def costFunctionReg(theta, X, y, RegParam):
@@ -7,22 +8,22 @@ def costFunctionReg(theta, X, y, RegParam):
     theta as the parameter for regularized logistic regression and the
     gradient of the cost w.r.t. to the parameters. 
     '''
+    (m, n) = X.shape
+    theta = theta.reshape((n, 1))
+    h = sigmoid(np.dot(X, theta))
 
-    return J, grad
+    # Regularize Cost function:
+    # NB. Regularization term starts at theta1
+    J = 1/m * (-np.dot(np.transpose(np.vstack(y)), np.log(h))
+               - np.dot(np.transpose(np.vstack(1-y)), np.log(1-h))) \
+        + (RegParam/(2*m)) * np.sum(np.power(theta[1:n], 2))
 
+    # NB. Regularization term starts at theta1
+    # compute regularization term for all
+    grad = np.dot(np.transpose(X), (h-np.vstack(y)))/m \
+        + np.dot((RegParam/m), theta)
 
-'''
-% Initialize some useful values
-m = length(y); % number of training examples
+    # adjust for the fist term, theta0
+    grad[0] = np.dot(np.transpose(np.vstack(X.iloc[:, 0])), (h-np.vstack(y)))/m
 
-% You need to return the following variables correctly 
-J = 0;
-grad = zeros(size(theta));
-
-% ====================== YOUR CODE HERE ======================
-% Instructions: Compute the cost of a particular choice of theta.
-%               You should set J to the cost.
-%               Compute the partial derivatives and set grad to the partial
-%               derivatives of the cost w.r.t. each parameter in theta
-
-'''
+    return J, grad.flatten()
