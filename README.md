@@ -56,6 +56,6 @@
     - *mapFeature.py*
     - *costFunctionReg.py*
 - **4. Neural Networks**
-  - KEYWORDS: Neural Networks
+  - KEYWORDS: Neural Networks Hypotheses Representation
   - *CODE: *
 
