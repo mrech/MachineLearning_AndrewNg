@@ -17,7 +17,7 @@ def oneVsAll(X, y, num_labels, lambda_par):
     '''
 
     # X dimensions
-    (m, n) = X.shape
+    m, n = X.shape
 
     # initiate all_theta
     all_theta = np.zeros((num_labels, n+1))
@@ -33,45 +33,20 @@ def oneVsAll(X, y, num_labels, lambda_par):
         # train the classifier for class k ∈ {1, ..., K}
         # new vector with 1 for the specific K, 0 for all the remaining
         # using list comprehension
-        c = np.array([1 if elem_y == k else 0 for elem_y in y]).reshape(m, 1)
+
+        print("Training {:d} out of {:d} categories...".format(
+            k+1, num_labels))
+
+        # True stands for function with gradient/jac paremeter
+        myargs = (X, (y == k).astype(int), lambda_par)
 
         # Initialize fitting parameters
-        initial_theta = np.zeros((n + 1))
+        initial_theta = np.zeros((n + 1, 1))
 
-        output = optimize.minimize(lrCostFunction, initial_theta,
-                                   args=(X, c, lambda_par), method='CG', jac=True, 
-                                   options={'maxiter': 400})
+        theta = optimize.minimize(lrCostFunction, initial_theta,
+                                  args=myargs, method='CG', jac=True,
+                                  options={'disp': True, 'maxiter': 50})
 
-        print('output message:', output.message)
-        print('k:', k)
-
-        all_theta[k, :] = output.x
+        all_theta[k, :] = theta['x']
 
     return all_theta
-
-
-'''
-
-% Hint: theta(:) will return a column vector.
-%
-% Note: For this assignment, we recommend using fmincg to optimize the cost
-%       function. It is okay to use a for-loop (for c = 1:num_labels) to
-%       loop over the different classes.
-%
-%       fmincg works similarly to fminunc, but is more efficient when we
-%       are dealing with large number of parameters.
-%
-% Example Code for fmincg:
-%
-%     % Set Initial theta
-%     initial_theta = zeros(n + 1, 1);
-%     
-%     % Set options for fminunc
-%     options = optimset('GradObj', 'on', 'MaxIter', 50);
-% 
-%     % Run fmincg to obtain the optimal theta
-%     % This function will return theta and the cost 
-%     [theta] = ...
-%         fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), ...
-%                 initial_theta, options);
-'''

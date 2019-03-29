@@ -11,7 +11,7 @@ from predictOneVsAll import predictOneVsAll, sigmoid
 
 input_layer_size = 400  # 20x20 Input Images of Digits
 num_labels = 10          # 10 labels, from 1 to 10
-# (note that we have mapped "0" to label 10)
+
 
 # =========== Part 1: Loading and Visualizing Data =============
 # We start the exercise by first loading and visualizing the dataset.
@@ -22,7 +22,12 @@ data = loadmat('ex3data1.mat')  # training data stored in arrays X, y
 X = data['X']  # X_5000x400
 y = data['y']  # y_5000x1
 
-# replace the label 10 with 0
+# crucial step in getting good performance!
+# changes the dimension from (m,1) to (m,)
+# otherwise the minimization isn't very effective...
+y=y.flatten() 
+
+# (note that we have mapped "0" to label 10)
 np.place(y, y == 10, 0)
 
 '''
@@ -82,4 +87,4 @@ print('Program paused. Press enter to continue.\n')
 # ================ Part 3: Predict for One-Vs-All ================
 
 pred = predictOneVsAll(all_theta, X)
-print('Train Accuracy: %.1f\n' % (np.mean(pred == y) * 100))
+print('Training Set Accuracy: %.1f' % (np.mean(pred == y)*100))
