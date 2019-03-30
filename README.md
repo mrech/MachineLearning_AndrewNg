@@ -57,5 +57,5 @@
     - *costFunctionReg.py*
 - **4. Neural Networks**
   - KEYWORDS: Neural Networks Hypotheses Representation
-  - *CODE: *
+  - *CODE: Regularized Logistic Regression | One-vs-All Classifier Training | One-vs-All Classifier Prediction | Neural Network Prediction Function*
 
