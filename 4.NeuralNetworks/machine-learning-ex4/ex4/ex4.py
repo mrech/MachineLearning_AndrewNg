@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import random
 import numpy as np
 from displayData import displayData
+from nnCostFunction import nnCostFunction
 
 # Setup the parameters you will use for this exercise
 input_layer_size = 400   # 20x20 Input Images of Digits
@@ -14,7 +15,7 @@ num_labels = 10           # 10 labels, from 1 to 10
 # =========== Part 1: Loading and Visualizing Data =============
 
 # Load Training Data
-input('Loading and Visualizing Data ...\n')
+print('Loading and Visualizing Data ...\n')
 
 
 data = loadmat('ex4data1.mat')
@@ -29,54 +30,48 @@ sel = sel[:100]
 displayData(X[sel])
 
 # Since python accept zero index, map the digit zero to value 0
-np.place(y, y == 10, 0)
+#np.place(y, y == 10, 0)
 
 input('Program paused. Press enter to continue.\n')
 
 # ================ Part 2: Loading Parameters ================
 # Load some pre-initialized neural network parameters.
 
-input('\nLoading Saved Neural Network Parameters ...\n')
+print('\nLoading Saved Neural Network Parameters ...\n')
 
 # Load the weights into variables Theta1 and Theta2
 
 weights = loadmat('ex4weights.mat')
 
-Theta1 = weights['Theta1']
-Theta2 = weights['Theta2']
+Theta1 = weights['Theta1']  # 25x401
+Theta2 = weights['Theta2']  # 10x26
 
 # Unrolling Parameters to Vector for Implementation
 nn_params = []
 nn_params.extend((list(Theta1.flatten()) +
                   list(Theta2.flatten())))
 
+# ================ Part 3: Compute Cost (Feedforward) ================
+#  1. start by implementing the feedforward part of the
+#     neural network that returns the cost only (nnCostFunction.py)
+#  2. verify that your implementation is correct by verifying that you
+#     get the same cost as us for the fixed debugging parameters.
+
+print('\nFeedforward Using Neural Network ...\n')
+
+# Weight regularization parameter (we set this to 0 here).
+lambda_param = 0
+
+J, grad = nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
+                   num_labels, X, y, lambda_param)
+
+print('Cost at parameters (loaded from ex4weights): {:.6f} '.format(float(J)))
+print('\n(this value should be about 0.287629)\n')
+
+input('\nProgram paused. Press enter to continue.\n')
+
+
 '''
-%% ================ Part 3: Compute Cost (Feedforward) ================
-%  To the neural network, you should first start by implementing the
-%  feedforward part of the neural network that returns the cost only. You
-%  should complete the code in nnCostFunction.m to return cost. After
-%  implementing the feedforward to compute the cost, you can verify that
-%  your implementation is correct by verifying that you get the same cost
-%  as us for the fixed debugging parameters.
-%
-%  We suggest implementing the feedforward cost *without* regularization
-%  first so that it will be easier for you to debug. Later, in part 4, you
-%  will get to implement the regularized cost.
-%
-fprintf('\nFeedforward Using Neural Network ...\n')
-
-% Weight regularization parameter (we set this to 0 here).
-lambda = 0;
-
-J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, ...
-                   num_labels, X, y, lambda);
-
-fprintf(['Cost at parameters (loaded from ex4weights): %f '...
-         '\n(this value should be about 0.287629)\n'], J);
-
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
-
 %% =============== Part 4: Implement Regularization ===============
 %  Once your cost function implementation is correct, you should now
 %  continue to implement the regularization with the cost.
