@@ -57,12 +57,19 @@ def nnCostFunction(nn_params,
 
         J.append(cost)
 
+    # Regularized term
+    # Take out the bias term in the first column
+    regul_term = lambda_param/(2*m)*(np.sum(np.power(Theta1[:, 1:], 2)) +
+                                     np.sum(np.power(Theta2[:, 1:], 2)))
+
+    J = sum(J) + regul_term
+
     # Unroll gradients
     grad = []
     grad.extend((list(Theta1_grad.flatten()) +
                  list(Theta2_grad.flatten())))
 
-    return sum(J), grad
+    return J, grad
 
 
 '''
