@@ -33,19 +33,24 @@ np.place(y, y == 10, 0)
 
 input('Program paused. Press enter to continue.\n')
 
+# ================ Part 2: Loading Parameters ================
+# Load some pre-initialized neural network parameters.
+
+input('\nLoading Saved Neural Network Parameters ...\n')
+
+# Load the weights into variables Theta1 and Theta2
+
+weights = loadmat('ex4weights.mat')
+
+Theta1 = weights['Theta1']
+Theta2 = weights['Theta2']
+
+# Unrolling Parameters to Vector for Implementation
+nn_params = []
+nn_params.extend((list(Theta1.flatten()) +
+                  list(Theta2.flatten())))
+
 '''
-%% ================ Part 2: Loading Parameters ================
-% In this part of the exercise, we load some pre-initializ ed 
-% neural network parameters.
-
-fprintf('\nLoading Saved Neural Network Parameters ...\n')
-
-% Load the weights into variables Theta1 and Theta2
-load('ex4weights.mat');
-
-% Unroll parameters 
-nn_params = [Theta1(:) ; Theta2(:)];
-
 %% ================ Part 3: Compute Cost (Feedforward) ================
 %  To the neural network, you should first start by implementing the
 %  feedforward part of the neural network that returns the cost only. You
