@@ -7,6 +7,7 @@ from displayData import displayData
 from nnCostFunction import nnCostFunction
 from sigmoidGradient import sigmoidGradient
 from randInitializeWeights import randInitializeWeights
+from checkNNGradients import checkNNGradients
 
 # Setup the parameters you will use for this exercise
 input_layer_size = 400   # 20x20 Input Images of Digits
@@ -94,7 +95,7 @@ print('\nEvaluating sigmoid gradient...\n')
 g = sigmoidGradient([-1, -0.5, 0, 0.5, 1])
 
 print('Sigmoid gradient evaluated at [-1 -0.5 0 0.5 1]:\n  ')
-print('%f ' % g)
+print('{}'.format(g))
 print('\n\n')
 
 input('Program paused. Press enter to continue.\n')
@@ -113,22 +114,17 @@ initial_nn_params = []
 initial_nn_params.extend((list(initial_Theta1.flatten()) +
                           list(initial_Theta2.flatten())))
 
+## =============== Part 7: Implement Backpropagation ===============
+# add in nnCostFunction.py to return the partial derivatives of the parameters.
+
+print('\nChecking Backpropagation... \n')
+
+# Check gradients by running checkNNGradients
+checkNNGradients()
+
+input('\nProgram paused. Press enter to continue.\n')
+    
 '''
-%% =============== Part 7: Implement Backpropagation ===============
-%  Once your cost matches up with ours, you should proceed to implement the
-%  backpropagation algorithm for the neural network. You should add to the
-%  code you've written in nnCostFunction.m to return the partial
-%  derivatives of the parameters.
-%
-fprintf('\nChecking Backpropagation... \n');
-
-%  Check gradients by running checkNNGradients
-checkNNGradients;
-
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
-
-
 %% =============== Part 8: Implement Regularization ===============
 %  Once your backpropagation implementation is correct, you should now
 %  continue to implement the regularization with the cost and gradient.

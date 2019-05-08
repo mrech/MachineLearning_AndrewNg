@@ -19,6 +19,7 @@ def nnCostFunction(nn_params,
 
     import numpy as np
     from sigmoid import sigmoid
+    from sigmoidGradient import sigmoidGradient
 
     # Reshape nn_params back into the parameters Theta1 and Theta2
     # the weight matrices for our 2 layer neural network
@@ -45,10 +46,11 @@ def nnCostFunction(nn_params,
         act_1 = np.append(1, act_1)  # add 1
         z_2 = np.dot(Theta1, act_1)
         act_2 = sigmoid(z_2)
-        act_2 = np.append(1, act_2)
+        act_2 = np.append(1, act_2)  # add 1
         z_3 = np.dot(Theta2, act_2)
         h = sigmoid(z_3)
 
+        # Logical arrays (binary vector of 1's and 0's)
         y_vect = np.zeros(num_labels)
         y_vect[y[i]-1] = 1
 
@@ -56,6 +58,27 @@ def nnCostFunction(nn_params,
                        np.dot(np.transpose(np.vstack(1-y_vect)), np.log(1-h)))
 
         J.append(cost)
+
+    # Part 2: Implement the backpropagation algorithm to compute the gradients
+    # Theta1_grad and Theta2_grad.
+    # You should return the partial derivatives of the cost function with respect
+    # to Theta1 and Theta2 in Theta1_grad and Theta2_grad, respectively.
+
+        # delta at the output layer
+        delta_3 = (h - y_vect)
+        # delta for the hidden layer
+        # remove delta_2_0 (gradients of bias units) by doing Theta2[:,1:]
+        delta_2 = np.dot(np.transpose(Theta2[:,1:]), delta_3) * sigmoidGradient(z_2)
+        # Accumulate the gradients (DELTA)
+        Theta1_grad = Theta1_grad + \
+            np.dot(np.vstack(delta_2), np.transpose(np.vstack(act_1)))
+
+        Theta2_grad = Theta2_grad + \
+            np.dot(np.vstack(delta_3), np.transpose(np.vstack(act_2)))
+
+    # Unregularized gradient for the neural network cost function
+    Theta1_grad = 1/m * Theta1_grad
+    Theta2_grad = 1/m * Theta2_grad
 
     # Regularized term
     # Take out the bias term in the first column
@@ -73,23 +96,6 @@ def nnCostFunction(nn_params,
 
 
 '''
-
-%
-% Part 2: Implement the backpropagation algorithm to compute the gradients
-%         Theta1_grad and Theta2_grad. You should return the partial derivatives of
-%         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
-%         Theta2_grad, respectively. After implementing Part 2, you can check
-%         that your implementation is correct by running checkNNGradients
-%
-%         Note: The vector y passed into the function is a vector of labels
-%               containing values from 1..K. You need to map this vector into a 
-%               binary vector of 1's and 0's to be used with the neural network
-%               cost function.
-%
-%         Hint: We recommend implementing backpropagation using a for-loop
-%               over the training examples if you are implementing it for the 
-%               first time.
-%
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for

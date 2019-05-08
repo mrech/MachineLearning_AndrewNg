@@ -17,6 +17,6 @@ def sigmoidGradient(z):
 
     g_prime = np.zeros((z.shape))
 
-    g_prime = np.dot(sigmoid(z), (1-sigmoid(z)))
+    g_prime = sigmoid(z)*(1-sigmoid(z))
 
     return g_prime
