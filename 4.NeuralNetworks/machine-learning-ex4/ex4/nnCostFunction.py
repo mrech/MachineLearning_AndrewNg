@@ -76,9 +76,13 @@ def nnCostFunction(nn_params,
         Theta2_grad = Theta2_grad + \
             np.dot(np.vstack(delta_3), np.transpose(np.vstack(act_2)))
 
-    # Unregularized gradient for the neural network cost function
-    Theta1_grad = 1/m * Theta1_grad
-    Theta2_grad = 1/m * Theta2_grad
+    # Regularized gradient for tall
+    capital_delta1 = 1/m * Theta1_grad + np.dot(lambda_param/m, Theta1)
+    capital_delta2 = 1/m * Theta2_grad + np.dot(lambda_param/m, Theta2)
+
+    # Adjust for the first column of Theta. Not regularization for j=0
+    capital_delta1[:,0] = 1/m * Theta1_grad[:,0]
+    capital_delta2[:,0] = 1/m * Theta2_grad[:,0]
 
     # Regularized term
     # Take out the bias term in the first column
@@ -89,8 +93,8 @@ def nnCostFunction(nn_params,
 
     # Unroll gradients
     grad = []
-    grad.extend((list(Theta1_grad.flatten()) +
-                 list(Theta2_grad.flatten())))
+    grad.extend((list(capital_delta1.flatten()) +
+                 list(capital_delta2.flatten())))
 
     return J, grad
 

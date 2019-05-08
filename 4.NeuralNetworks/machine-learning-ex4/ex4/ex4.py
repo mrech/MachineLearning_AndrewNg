@@ -114,7 +114,7 @@ initial_nn_params = []
 initial_nn_params.extend((list(initial_Theta1.flatten()) +
                           list(initial_Theta2.flatten())))
 
-## =============== Part 7: Implement Backpropagation ===============
+# =============== Part 7: Implement Backpropagation ===============
 # add in nnCostFunction.py to return the partial derivatives of the parameters.
 
 print('\nChecking Backpropagation... \n')
@@ -123,30 +123,26 @@ print('\nChecking Backpropagation... \n')
 checkNNGradients()
 
 input('\nProgram paused. Press enter to continue.\n')
-    
+
+# =============== Part 8: Implement Regularization ===============
+
+print('\nChecking Backpropagation (w/ Regularization) ... \n')
+
+#  Check gradients by running checkNNGradients
+lambda_param = 3
+checkNNGradients(lambda_param)
+
+# Also output the costFunction debugging values
+
+debug_J, _ = nnCostFunction(nn_params, input_layer_size,
+                            hidden_layer_size, num_labels, X, y, lambda_param)
+
+print('\n\nCost at (fixed) debugging parameters (w/ lambda = {0}): {1} '
+      '\n(for lambda = 3, this value should be about 0.576051)\n\n'.format(lambda_param, debug_J))
+
+input('Program paused. Press enter to continue.\n')
+
 '''
-%% =============== Part 8: Implement Regularization ===============
-%  Once your backpropagation implementation is correct, you should now
-%  continue to implement the regularization with the cost and gradient.
-%
-
-fprintf('\nChecking Backpropagation (w/ Regularization) ... \n')
-
-%  Check gradients by running checkNNGradients
-lambda = 3;
-checkNNGradients(lambda);
-
-% Also output the costFunction debugging values
-debug_J  = nnCostFunction(nn_params, input_layer_size, ...
-                          hidden_layer_size, num_labels, X, y, lambda);
-
-fprintf(['\n\nCost at (fixed) debugging parameters (w/ lambda = %f): %f ' ...
-         '\n(for lambda = 3, this value should be about 0.576051)\n\n'], lambda, debug_J);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-
 %% =================== Part 8: Training NN ===================
 %  You have now implemented all the code necessary to train a neural 
 %  network. To train your neural network, we will now use "fmincg", which
