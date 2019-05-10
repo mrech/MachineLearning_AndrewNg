@@ -8,6 +8,8 @@ from nnCostFunction import nnCostFunction
 from sigmoidGradient import sigmoidGradient
 from randInitializeWeights import randInitializeWeights
 from checkNNGradients import checkNNGradients
+from scipy import optimize
+from predict import predict
 
 # Setup the parameters you will use for this exercise
 input_layer_size = 400   # 20x20 Input Images of Digits
@@ -114,6 +116,8 @@ initial_nn_params = []
 initial_nn_params.extend((list(initial_Theta1.flatten()) +
                           list(initial_Theta2.flatten())))
 
+initial_nn_params = np.array(initial_nn_params)
+
 # =============== Part 7: Implement Backpropagation ===============
 # add in nnCostFunction.py to return the partial derivatives of the parameters.
 
@@ -142,63 +146,55 @@ print('\n\nCost at (fixed) debugging parameters (w/ lambda = {0}): {1} '
 
 input('Program paused. Press enter to continue.\n')
 
-'''
-%% =================== Part 8: Training NN ===================
-%  You have now implemented all the code necessary to train a neural 
-%  network. To train your neural network, we will now use "fmincg", which
-%  is a function which works similarly to "fminunc". Recall that these
-%  advanced optimizers are able to train our cost functions efficiently as
-%  long as we provide them with the gradient computations.
-%
-fprintf('\nTraining Neural Network... \n')
+# =================== Part 8: Training NN ===================
+# Train your neural network using advanced optimizer optimize.minimize from scipy
+# Advanced optimizers are able to train the cost functions efficiently as
+# long as we provide the gradient computations.
 
-%  After you have completed the assignment, change the MaxIter to a larger
-%  value to see how more training helps.
-options = optimset('MaxIter', 50);
+print('\nTraining Neural Network... \n')
 
-%  You should also try different values of lambda
-lambda = 1;
+#  Try different values of lambda
+# set the regularization lambda to a smaller value (closer to overfitting)
 
-% Create "short hand" for the cost function to be minimized
-costFunction = @(p) nnCostFunction(p, ...
-                                   input_layer_size, ...
-                                   hidden_layer_size, ...
-                                   num_labels, X, y, lambda);
+lambda_param = 1
 
-% Now, costFunction is a function that takes in only one argument (the
-% neural network parameters)
-[nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
+myargs = (input_layer_size, hidden_layer_size, num_labels, X, y, lambda_param)
 
-% Obtain Theta1 and Theta2 back from nn_params
-Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
-                 hidden_layer_size, (input_layer_size + 1));
+# Try different values of MaxIter to see how more training helps
+# set MaxIter to a higher number (closer to overfitting)
 
-Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                 num_labels, (hidden_layer_size + 1));
+result = optimize.minimize(nnCostFunction, initial_nn_params,
+                                    args=myargs, method='CG', jac=True,
+                                    options={'disp': True, 'maxiter': 50})
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+nn_params = result['x']
+# Obtain Theta1 and Theta2 back from nn_params
 
+Theta1 = np.reshape(nn_params[0:hidden_layer_size * (input_layer_size + 1)],
+                  (hidden_layer_size, (input_layer_size + 1)))
 
-%% ================= Part 9: Visualize Weights =================
-%  You can now "visualize" what the neural network is learning by 
-%  displaying the hidden units to see what features they are capturing in 
-%  the data.
+Theta2 = np.reshape(nn_params[(hidden_layer_size*(input_layer_size+1))::],
+                  (num_labels, (hidden_layer_size + 1)))
 
-fprintf('\nVisualizing Neural Network... \n')
+input('Program paused. Press enter to continue.\n')
 
-displayData(Theta1(:, 2:end));
+## ================= Part 9: Visualize Weights =================
+# You can now "visualize" what the neural network is learning by 
+#  displaying the hidden units to see what features they are capturing in 
+#  the data.
 
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
+print('\nVisualizing Neural Network... \n')
 
-%% ================= Part 10: Implement Predict =================
-%  After training the neural network, we would like to use it to predict
-%  the labels. You will now implement the "predict" function to use the
-%  neural network to predict the labels of the training set. This lets
-%  you compute the training set accuracy.
+displayData(Theta1[:,1:])
 
-pred = predict(Theta1, Theta2, X);
+input('\nProgram paused. Press enter to continue.\n')
 
-fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
-'''
+## ================= Part 10: Implement Predict =================
+# use the neural network to predict the labels of the training set. 
+# This lets you compute the training set accuracy.
+
+pred = predict(Theta1, Theta2, X)
+
+y = np.int_(y)
+
+print('\nTraining Set Accuracy: %1f\n' % (np.mean((pred == y.flatten()) * 100)))

@@ -76,6 +76,7 @@ def nnCostFunction(nn_params,
         Theta2_grad = Theta2_grad + \
             np.dot(np.vstack(delta_3), np.transpose(np.vstack(act_2)))
 
+# Part 3: Implement regularization with the cost function and gradients.
     # Regularized gradient for tall
     capital_delta1 = 1/m * Theta1_grad + np.dot(lambda_param/m, Theta1)
     capital_delta2 = 1/m * Theta2_grad + np.dot(lambda_param/m, Theta2)
@@ -96,14 +97,6 @@ def nnCostFunction(nn_params,
     grad.extend((list(capital_delta1.flatten()) +
                  list(capital_delta2.flatten())))
 
+    grad = np.array(grad)
+    
     return J, grad
-
-
-'''
-% Part 3: Implement regularization with the cost function and gradients.
-%
-%         Hint: You can implement this around the code for
-%               backpropagation. That is, you can compute the gradients for
-%               the regularization separately and then add them to Theta1_grad
-%               and Theta2_grad from Part 2.
-'''
