@@ -5,6 +5,7 @@ from scipy.io import loadmat
 import numpy as np
 import matplotlib.pyplot as plt
 from linearRegCostFunction import linearRegCostFunction
+from trainLinearReg import trainLinearReg
 
 # =========== Part 1: Loading and Visualizing Data =============
 #  We start the exercise by first loading and visualizing the dataset.
@@ -45,13 +46,13 @@ theta = np.array([[1], [1]])
 J = linearRegCostFunction(np.concatenate(
     (np.ones(m).reshape(m, 1), X), axis=1), y, theta, 1)
 
-print('Cost at theta = [1 ; 1]: {:.6f} '\
-         '\n(this value should be about 303.993192)\n'.format(float(J[0])))
+print('Cost at theta = [1 ; 1]: {:.6f} '
+      '\n(this value should be about 303.993192)\n'.format(float(J[0])))
 
 input('Program paused. Press enter to continue.\n')
 
-## =========== Part 3: Regularized Linear Regression Gradient =============
-#  You should now implement the gradient for regularized linear 
+# =========== Part 3: Regularized Linear Regression Gradient =============
+#  You should now implement the gradient for regularized linear
 #  regression.
 
 theta = np.array([[1], [1]])
@@ -59,38 +60,38 @@ theta = np.array([[1], [1]])
 [J, grad] = linearRegCostFunction(np.concatenate(
     (np.ones(m).reshape(m, 1), X), axis=1), y, theta, 1)
 
-print('Gradient at theta = [1 ; 1]:  [{:.6f} ; {:.6f}] '\
-         '\n(this value should be about [-15.303016; 598.250744])\n' \
-         .format(float(grad[0]), float(grad[1])))
+print('Gradient at theta = [1 ; 1]:  [{:.6f} ; {:.6f}] '
+      '\n(this value should be about [-15.303016; 598.250744])\n'
+      .format(float(grad[0]), float(grad[1])))
+
+input('Program paused. Press enter to continue.\n')
+
+# =========== Part 4: Train Linear Regression =============
+#  Once you have implemented the cost and gradient correctly, the
+#  trainLinearReg function will use your cost function to train
+#  regularized linear regression.
+
+#  Write Up Note: The data is non-linear, so this will not give a great
+#                 fit.
+
+#  Train linear regression with lambda = 0
+lambda_par = 0
+
+theta = trainLinearReg(np.concatenate(
+    (np.ones(m).reshape(m, 1), X), axis=1), y, lambda_par)
+
+print('Visualizing Data and Trained Linear Regression ...\n')
+
+#  Plot fit over the data
+plt.plot(X, y, 'rx', markersize=10, linewidth=1.5)
+plt.plot(X, np.concatenate((np.ones(m).reshape(m, 1), X), axis=1)@theta, '--', linewidth=2)
+plt.xlabel('Change in water level (x)')
+plt.ylabel('Water flowing out of the dam (y)')
+plt.show()
 
 input('Program paused. Press enter to continue.\n')
 
 '''
-%% =========== Part 4: Train Linear Regression =============
-%  Once you have implemented the cost and gradient correctly, the
-%  trainLinearReg function will use your cost function to train 
-%  regularized linear regression.
-% 
-%  Write Up Note: The data is non-linear, so this will not give a great 
-%                 fit.
-%
-
-%  Train linear regression with lambda = 0
-lambda = 0;
-[theta] = trainLinearReg([ones(m, 1) X], y, lambda);
-
-%  Plot fit over the data
-plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
-xlabel('Change in water level (x)');
-ylabel('Water flowing out of the dam (y)');
-hold on;
-plot(X, [ones(m, 1) X]*theta, '--', 'LineWidth', 2)
-hold off;
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-
 %% =========== Part 5: Learning Curve for Linear Regression =============
 %  Next, you should implement the learningCurve function. 
 %

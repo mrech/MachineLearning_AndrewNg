@@ -13,6 +13,8 @@ def linearRegCostFunction(X, y, theta, lambda_par):
 
     # Initialize some useful values
     m = len(y)  # number of training examples
+    (m, n) = X.shape
+    theta = theta.reshape((n, 1))
 
     # You need to return the following variables correctly
     J = 0
@@ -33,4 +35,4 @@ def linearRegCostFunction(X, y, theta, lambda_par):
     # Adjust for the first term, theta0
     grad[0] = np.dot(np.transpose(X[:,0]), h - y)/m
 
-    return [J, grad]
+    return J, grad.flatten()
