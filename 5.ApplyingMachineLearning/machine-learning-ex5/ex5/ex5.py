@@ -1,19 +1,20 @@
-## Machine Learning Online Class
+# Machine Learning Online Class
 #  Exercise 5 | Regularized Linear Regression and Bias-Variance
 
 from scipy.io import loadmat
 import numpy as np
 import matplotlib.pyplot as plt
+from linearRegCostFunction import linearRegCostFunction
 
-## =========== Part 1: Loading and Visualizing Data =============
-#  We start the exercise by first loading and visualizing the dataset. 
+# =========== Part 1: Loading and Visualizing Data =============
+#  We start the exercise by first loading and visualizing the dataset.
 #  The following code will load the dataset into your environment and plot
 #  the data.
 
 # Load Training Data
 print('Loading and Visualizing Data ...\n')
 
-# Load from ex5data1: 
+# Load from ex5data1:
 # You will have X, y, Xval, yval, Xtest, ytest in your environment
 
 data = loadmat('ex5data1.mat')
@@ -28,28 +29,30 @@ ytest = data['ytest']
 m = X.shape[0]
 
 # Plot training data
-plt.plot(X, y, 'rx', linewidth = 1.5, markersize = 10)
+plt.plot(X, y, 'rx', linewidth=1.5, markersize=10)
 plt.xlabel('Change in water level (x)')
 plt.ylabel('Water flowing out of the dam (y)')
 plt.show()
 
 input('Program paused. Press enter to continue.\n')
 
+# =========== Part 2: Regularized Linear Regression Cost =============
+#  You should now implement the cost function for regularized linear
+#  regression.
+
+theta = np.array([[1], [1]])
+
+foo = np.concatenate((np.ones(m).reshape(m, 1), X), axis=1)
+
+J = linearRegCostFunction(np.concatenate(
+    (np.ones(m).reshape(m, 1), X), axis=1), y, theta, 1)
+
+print('Cost at theta = [1 ; 1]: {:.6f} '\
+         '\n(this value should be about 303.993192)\n'.format(float(J[0])))
+
+input('Program paused. Press enter to continue.\n')
+
 '''
-%% =========== Part 2: Regularized Linear Regression Cost =============
-%  You should now implement the cost function for regularized linear 
-%  regression. 
-%
-
-theta = [1 ; 1];
-J = linearRegCostFunction([ones(m, 1) X], y, theta, 1);
-
-fprintf(['Cost at theta = [1 ; 1]: %f '...
-         '\n(this value should be about 303.993192)\n'], J);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% =========== Part 3: Regularized Linear Regression Gradient =============
 %  You should now implement the gradient for regularized linear 
 %  regression.
