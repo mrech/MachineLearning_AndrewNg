@@ -42,8 +42,6 @@ input('Program paused. Press enter to continue.\n')
 
 theta = np.array([[1], [1]])
 
-foo = np.concatenate((np.ones(m).reshape(m, 1), X), axis=1)
-
 J = linearRegCostFunction(np.concatenate(
     (np.ones(m).reshape(m, 1), X), axis=1), y, theta, 1)
 
@@ -52,23 +50,22 @@ print('Cost at theta = [1 ; 1]: {:.6f} '\
 
 input('Program paused. Press enter to continue.\n')
 
+## =========== Part 3: Regularized Linear Regression Gradient =============
+#  You should now implement the gradient for regularized linear 
+#  regression.
+
+theta = np.array([[1], [1]])
+
+[J, grad] = linearRegCostFunction(np.concatenate(
+    (np.ones(m).reshape(m, 1), X), axis=1), y, theta, 1)
+
+print('Gradient at theta = [1 ; 1]:  [{:.6f} ; {:.6f}] '\
+         '\n(this value should be about [-15.303016; 598.250744])\n' \
+         .format(float(grad[0]), float(grad[1])))
+
+input('Program paused. Press enter to continue.\n')
+
 '''
-%% =========== Part 3: Regularized Linear Regression Gradient =============
-%  You should now implement the gradient for regularized linear 
-%  regression.
-%
-
-theta = [1 ; 1];
-[J, grad] = linearRegCostFunction([ones(m, 1) X], y, theta, 1);
-
-fprintf(['Gradient at theta = [1 ; 1]:  [%f; %f] '...
-         '\n(this value should be about [-15.303016; 598.250744])\n'], ...
-         grad(1), grad(2));
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-
 %% =========== Part 4: Train Linear Regression =============
 %  Once you have implemented the cost and gradient correctly, the
 %  trainLinearReg function will use your cost function to train 

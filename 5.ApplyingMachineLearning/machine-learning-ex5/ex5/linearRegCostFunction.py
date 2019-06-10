@@ -26,4 +26,11 @@ def linearRegCostFunction(X, y, theta, lambda_par):
     J = (1/(2*m)) * np.sum(np.power(h-y, 2)) \
         + (lambda_par/(2*m)) * np.sum(np.power(theta[1:m], 2))
 
+    # Compute regularization term for all
+    grad = np.dot(np.transpose(X), h - y)/m + \
+        np.dot((lambda_par/m), theta)
+
+    # Adjust for the first term, theta0
+    grad[0] = np.dot(np.transpose(X[:,0]), h - y)/m
+
     return [J, grad]
