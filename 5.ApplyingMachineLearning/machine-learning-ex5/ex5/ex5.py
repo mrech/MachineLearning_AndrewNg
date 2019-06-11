@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from linearRegCostFunction import linearRegCostFunction
 from trainLinearReg import trainLinearReg
+from learningCurve import learningCurve
 
 # =========== Part 1: Loading and Visualizing Data =============
 #  We start the exercise by first loading and visualizing the dataset.
@@ -84,42 +85,44 @@ print('Visualizing Data and Trained Linear Regression ...\n')
 
 #  Plot fit over the data
 plt.plot(X, y, 'rx', markersize=10, linewidth=1.5)
-plt.plot(X, np.concatenate((np.ones(m).reshape(m, 1), X), axis=1)@theta, '--', linewidth=2)
+plt.plot(X, np.concatenate((np.ones(m).reshape(m, 1), X), axis=1)
+         @theta, '--', linewidth=2)
 plt.xlabel('Change in water level (x)')
 plt.ylabel('Water flowing out of the dam (y)')
 plt.show()
 
 input('Program paused. Press enter to continue.\n')
 
+# =========== Part 5: Learning Curve for Linear Regression =============
+#  Next, you should implement the learningCurve function.
+
+#  Write Up Note: Since the model is underfitting the data, we expect to
+#                 see a graph with "high bias" -- Figure 3 in ex5.pdf
+
+lambda_par = 0
+
+error_train, error_val = \
+    learningCurve(np.concatenate((np.ones(m).reshape(m, 1), X), axis=1), y,
+                  np.concatenate(
+                      (np.ones(Xval.shape[0]).reshape(Xval.shape[0], 1), Xval), axis=1), yval,
+                  lambda_par)
+
+plt.plot(range(1, m+1), error_train, range(1, m+1), error_val)
+plt.title('Learning curve for linear regression')
+plt.legend(['Train', 'Cross Validation'])
+plt.xlabel('Number of training examples')
+plt.ylabel('Error')
+plt.axis([0, 13, 0, 150])
+plt.show()
+
+print('# Training Examples\tTrain Error\tCross Validation Error\n')
+for i in range(m):
+    print('  \t{}\t\t{:.6f}\t{:.6f}\n'.format(
+        i, float(error_train[i]), float(error_val[i])))
+
+input('Program paused. Press enter to continue.\n')
+
 '''
-%% =========== Part 5: Learning Curve for Linear Regression =============
-%  Next, you should implement the learningCurve function. 
-%
-%  Write Up Note: Since the model is underfitting the data, we expect to
-%                 see a graph with "high bias" -- Figure 3 in ex5.pdf 
-%
-
-lambda = 0;
-[error_train, error_val] = ...
-    learningCurve([ones(m, 1) X], y, ...
-                  [ones(size(Xval, 1), 1) Xval], yval, ...
-                  lambda);
-
-plot(1:m, error_train, 1:m, error_val);
-title('Learning curve for linear regression')
-legend('Train', 'Cross Validation')
-xlabel('Number of training examples')
-ylabel('Error')
-axis([0 13 0 150])
-
-fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
-for i = 1:m
-    fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i));
-end
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% =========== Part 6: Feature Mapping for Polynomial Regression =============
 %  One solution to this is to use polynomial regression. You should now
 %  complete polyFeatures to map each example into its powers
@@ -154,7 +157,7 @@ pause;
 
 %% =========== Part 7: Learning Curve for Polynomial Regression =============
 %  Now, you will get to experiment with polynomial regression with multiple
-%  values of lambda. The code below runs polynomial regression with 
+%  values of lambda. The code below runs polynomial regression with
 %  lambda = 0. You should try running the code with different values of
 %  lambda to see how the fit and learning curve change.
 %
@@ -191,7 +194,7 @@ fprintf('Program paused. Press enter to continue.\n');
 pause;
 
 %% =========== Part 8: Validation for Selecting Lambda =============
-%  You will now implement validationCurve to test various values of 
+%  You will now implement validationCurve to test various values of
 %  lambda on a validation set. You will then use this to select the
 %  "best" lambda value.
 %
