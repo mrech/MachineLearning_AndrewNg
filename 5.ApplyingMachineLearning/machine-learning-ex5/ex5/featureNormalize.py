@@ -11,8 +11,10 @@ def featureNormalize(X):
 
     import numpy as np
 
-    mu = np.mean(X)
-    sigma = np.std(X)
-    X_norm = (X - mu)/sigma
+    # Columns mean: mean values considering the rows
+    mu = np.mean(X, axis=0)
+    X_norm = X - mu
+    sigma = np.std(X_norm,axis=0)
+    X_norm = X_norm/sigma
 
     return X_norm, mu, sigma
