@@ -20,5 +20,5 @@
   - **PROGRAMMING EXERCISE 3: Multi-class Classification and Neural Networks**'
   - **PROGRAMMING EXERCISE 4: Neural Networks Learning**
 - **5. Advice for Applying Machine Learning**
-  - TOPIC: Model Se lection Train/Validation/Test Sets | Diagnosing Bias vs. Variance
+  - TOPIC: Model Se lection Train/Validation/Test Sets | Diagnosing Bias vs. Variance | Error analysis | Handling Skewed Data (Precision and Recall)
   - **PROGRAMMING EXERCISE 5: Regularized Linear Regression and Bias v.s. Variance**
