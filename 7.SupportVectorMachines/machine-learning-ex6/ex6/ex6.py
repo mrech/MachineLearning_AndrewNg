@@ -1,13 +1,15 @@
-## Machine Learning Online Class
+# Machine Learning Online Class
 #  Exercise 6 | Support Vector Machines
 
 from scipy.io import loadmat
 import matplotlib.pyplot as plt
 import numpy as np
 from plotData import *
+from sklearn import svm
+from visualizeBoundaryLinear import *
 
-## =============== Part 1: Loading and Visualizing Data ================
-#  We start the exercise by first loading and visualizing the dataset. 
+# =============== Part 1: Loading and Visualizing Data ================
+#  We start the exercise by first loading and visualizing the dataset.
 
 print('Loading and Visualizing Data ...\n')
 
@@ -18,31 +20,30 @@ y = data['y']
 
 # Plot training data
 plotData(X, y)
+plt.show()
 
 input('Program paused. Press enter to continue.\n')
 
+# ==================== Part 2: Training Linear SVM ====================
+#  The following code will train a linear SVM on the dataset and plot the
+#  decision boundary learned.
+
+print('\nTraining Linear SVM ...\n')
+
+# You should try to change the C value below and see how the decision
+# boundary varies (e.g., try C = 1000)
+
+PenaltyParameter = 100
+
+model = svm.LinearSVC(tol=1e-3, C= PenaltyParameter, random_state=0, max_iter=100000)
+model.fit(X,y.ravel())
+
+visualizeBoundaryLinear(X, y, model)
+plt.show()
+
+input('Program paused. Press enter to continue.\n')
 
 '''
-%% ==================== Part 2: Training Linear SVM ====================
-%  The following code will train a linear SVM on the dataset and plot the
-%  decision boundary learned.
-%
-
-% Load from ex6data1: 
-% You will have X, y in your environment
-load('ex6data1.mat');
-
-fprintf('\nTraining Linear SVM ...\n')
-
-% You should try to change the C value below and see how the decision
-% boundary varies (e.g., try C = 1000)
-C = 1;
-model = svmTrain(X, y, C, @linearKernel, 1e-3, 20);
-visualizeBoundaryLinear(X, y, model);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% =============== Part 3: Implementing Gaussian Kernel ===============
 %  You will now implement the Gaussian kernel to use
 %  with the SVM. You should complete the code in gaussianKernel.m

@@ -15,4 +15,3 @@ def plotData(X, y):
 
     # Plot Examples
     plt.plot(X[posIndex,0], X[posIndex, 1], 'k+', X[negIndex,0], X[negIndex,1], 'yo')
-    plt.show()
