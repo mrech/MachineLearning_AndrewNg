@@ -22,7 +22,10 @@ def plotDecisionBoundary(theta, X, y):
         # Only need 2 points to define a line, so choose two endpoints
         plot_x = np.array([min(X[1])-2,  max(X[1])+2])
 
-        # Calculate the decision boundary line: theta0 + theta1X1 + theta2X2 = 0
+        # Calculate the decision boundary line: 
+        # g(z) = 1/2 >> e^(-z) = 1 >> z = 0 
+        # theta0 + theta1X1 + theta2X2 = 0
+        # x2 plays as y >> y = - (theta0 + theta1X1) / theta2
         plot_y = (-1/theta[2])*(theta[0]+(theta[1]*plot_x))
 
         # Plot, and adjust axes for better viewing
