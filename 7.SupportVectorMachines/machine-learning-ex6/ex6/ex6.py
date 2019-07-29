@@ -7,6 +7,7 @@ import numpy as np
 from plotData import *
 from sklearn import svm
 from visualizeBoundaryLinear import *
+from gaussianKernel import *
 
 # =============== Part 1: Loading and Visualizing Data ================
 #  We start the exercise by first loading and visualizing the dataset.
@@ -43,22 +44,23 @@ plt.show()
 
 input('Program paused. Press enter to continue.\n')
 
+## =============== Part 3: Implementing Gaussian Kernel ===============
+#  Implement the Gaussian kernel to use with the SVM.
+
+print('\nEvaluating the Gaussian Kernel ...\n')
+
+x1 = np.array([1, 2, 1])
+x2 = np.array([0, 4, -1])
+sigma = 2
+
+sim = gaussianKernel(x1, x2, sigma)
+
+print('Gaussian Kernel between x1 = [1; 2; 1], x2 = [0; 4; -1], sigma = {:.6f} :' \
+         '\n\t{:.6f}\n(for sigma = 2, this value should be about 0.324652)\n'.format(float(sigma), float(sim)))
+
+input('Program paused. Press enter to continue.\n')
+
 '''
-%% =============== Part 3: Implementing Gaussian Kernel ===============
-%  You will now implement the Gaussian kernel to use
-%  with the SVM. You should complete the code in gaussianKernel.m
-%
-fprintf('\nEvaluating the Gaussian Kernel ...\n')
-
-x1 = [1 2 1]; x2 = [0 4 -1]; sigma = 2;
-sim = gaussianKernel(x1, x2, sigma);
-
-fprintf(['Gaussian Kernel between x1 = [1; 2; 1], x2 = [0; 4; -1], sigma = %f :' ...
-         '\n\t%f\n(for sigma = 2, this value should be about 0.324652)\n'], sigma, sim);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% =============== Part 4: Visualizing Dataset 2 ================
 %  The following code will load the next dataset into your environment and 
 %  plot the data. 
