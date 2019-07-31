@@ -5,9 +5,12 @@ from scipy.io import loadmat
 import matplotlib.pyplot as plt
 import numpy as np
 from plotData import *
+from svmTrain import *
 from sklearn import svm
 from visualizeBoundaryLinear import *
 from gaussianKernel import *
+from visualizeBoundary import *
+import linearKernel as lk
 
 # =============== Part 1: Loading and Visualizing Data ================
 #  We start the exercise by first loading and visualizing the dataset.
@@ -31,15 +34,33 @@ input('Program paused. Press enter to continue.\n')
 
 print('\nTraining Linear SVM ...\n')
 
-# You should try to change the C value below and see how the decision
-# boundary varies (e.g., try C = 1000)
+# You should try to change the C (PenaltyParameter) value below and see how the decision
+# boundary varies (e.g., try C = 1 and C = 100)
 
-PenaltyParameter = 100
+C = 1
 
-model = svm.LinearSVC(tol=1e-3, C= PenaltyParameter, random_state=0, max_iter=100000)
-model.fit(X,y.ravel())
+# model using the linear kernel implementation 
+model = svmTrain(X, y, C, kernelFunction = 'linear')
+
+# alternative using the svm implementation
+# model = svm.LinearSVC(tol=1e-3, C= C, random_state=0, max_iter=100000)
+# model.fit(X,y.ravel())
 
 visualizeBoundaryLinear(X, y, model)
+plt.title('SVM Decision Boundary with C = 1')
+plt.show()
+
+C = 100
+
+# model using the linear kernel implementation 
+model = svmTrain(X, y, C, kernelFunction = 'linear')
+
+# alternative using the svm implementation
+# model = svm.LinearSVC(tol=1e-3, C= C, random_state=0, max_iter=100000)
+# model.fit(X,y.ravel())
+
+visualizeBoundaryLinear(X, y, model)
+plt.title('SVM Decision Boundary with C = 100')
 plt.show()
 
 input('Program paused. Press enter to continue.\n')
@@ -48,7 +69,7 @@ input('Program paused. Press enter to continue.\n')
 #  Implement the Gaussian kernel to use with the SVM.
 
 print('\nEvaluating the Gaussian Kernel ...\n')
-
+tol=1e-3
 x1 = np.array([1, 2, 1])
 x2 = np.array([0, 4, -1])
 sigma = 2
@@ -60,46 +81,44 @@ print('Gaussian Kernel between x1 = [1; 2; 1], x2 = [0; 4; -1], sigma = {:.6f} :
 
 input('Program paused. Press enter to continue.\n')
 
+## =============== Part 4: Visualizing Dataset 2 ================
+#  The following code will load the next dataset into your environment and 
+#  plot the data. 
+
+print('Loading and Visualizing Data ...\n')
+
+data = loadmat('ex6data2.mat')
+X = data['X']
+y = data['y']
+
+plotData(X, y)
+plt.show()
+
+print('Program paused. Press enter to continue.\n')
+
+## ========== Part 5: Training SVM with RBF Kernel (Dataset 2) ==========
+#  After you have implemented the kernel, we can now use it to train the 
+#  SVM classifier.
+# 
+print('Training SVM with RBF Kernel (this may take 1 to 2 minutes) ...')
+
+# SVM Parameters
+# C = 1
+# sigma = 0.1
+
+model = svmTrain(X, y, C, kernelFunction = "gaussian")
+
+# alternative without the Gaussian kernel implementation
+# Gamma explained behaviour : gamma ~ 1/sigma
+# model = svm.SVC(C = 1, kernel = 'rbf', gamma=100)
+# model.fit(X, y.ravel())
+
+visualizeBoundary(X, y, model)
+plt.show()
+
+print('Program paused. Press enter to continue.\n')
+    
 '''
-%% =============== Part 4: Visualizing Dataset 2 ================
-%  The following code will load the next dataset into your environment and 
-%  plot the data. 
-%
-
-fprintf('Loading and Visualizing Data ...\n')
-
-% Load from ex6data2: 
-% You will have X, y in your environment
-load('ex6data2.mat');
-
-% Plot training data
-plotData(X, y);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-%% ========== Part 5: Training SVM with RBF Kernel (Dataset 2) ==========
-%  After you have implemented the kernel, we can now use it to train the 
-%  SVM classifier.
-% 
-fprintf('\nTraining SVM with RBF Kernel (this may take 1 to 2 minutes) ...\n');
-
-% Load from ex6data2: 
-% You will have X, y in your environment
-load('ex6data2.mat');
-
-% SVM Parameters
-C = 1; sigma = 0.1;
-
-% We set the tolerance and max_passes lower here so that the code will run
-% faster. However, in practice, you will want to run the training to
-% convergence.
-model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma)); 
-visualizeBoundary(X, y, model);
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% =============== Part 6: Visualizing Dataset 3 ================
 %  The following code will load the next dataset into your environment and 
 %  plot the data. 
