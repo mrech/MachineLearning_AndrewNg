@@ -11,6 +11,7 @@ from visualizeBoundaryLinear import *
 from gaussianKernel import *
 from visualizeBoundary import *
 import linearKernel as lk
+from dataset3Params import *
 
 # =============== Part 1: Loading and Visualizing Data ================
 #  We start the exercise by first loading and visualizing the dataset.
@@ -94,7 +95,7 @@ y = data['y']
 plotData(X, y)
 plt.show()
 
-print('Program paused. Press enter to continue.\n')
+input('Program paused. Press enter to continue.\n')
 
 ## ========== Part 5: Training SVM with RBF Kernel (Dataset 2) ==========
 #  After you have implemented the kernel, we can now use it to train the 
@@ -110,50 +111,44 @@ model = svmTrain(X, y, C, kernelFunction = "gaussian")
 
 # alternative without the Gaussian kernel implementation
 # Gamma explained behaviour : gamma ~ 1/sigma
-# model = svm.SVC(C = 1, kernel = 'rbf', gamma=100)
-# model.fit(X, y.ravel())
+#model = svm.SVC(C = 1, kernel = 'rbf', gamma=100)
+#model.fit(X, y.ravel())
 
 visualizeBoundary(X, y, model)
 plt.show()
 
-print('Program paused. Press enter to continue.\n')
-    
-'''
-%% =============== Part 6: Visualizing Dataset 3 ================
-%  The following code will load the next dataset into your environment and 
-%  plot the data. 
-%
+input('Program paused. Press enter to continue.\n')
 
-fprintf('Loading and Visualizing Data ...\n')
+## =============== Part 6: Visualizing Dataset 3 ================
+# The following code will load the next dataset into your environment and 
+# plot the data. 
 
-% Load from ex6data3: 
-% You will have X, y in your environment
-load('ex6data3.mat');
+print('Loading and Visualizing Data ...\n')
 
-% Plot training data
-plotData(X, y);
+# Load from ex6data3
+data = loadmat('ex6data3.mat')
+X = data['X']
+y = data['y']
+Xval = data['Xval']
+yval = data['yval']
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+# Plot training data
+plotData(X, y)
+plt.show()
 
-%% ========== Part 7: Training SVM with RBF Kernel (Dataset 3) ==========
+input('Program paused. Press enter to continue.\n')
 
-%  This is a different dataset that you can use to experiment with. Try
-%  different values of C and sigma here.
-% 
+## ========== Part 7: Training SVM with RBF Kernel (Dataset 3) ==========
 
-% Load from ex6data3: 
-% You will have X, y in your environment
-load('ex6data3.mat');
+#  This is a different dataset that you can use to experiment with. Try
+#  different values of C and sigma here.
 
-% Try different SVM Parameters here
-[C, sigma] = dataset3Params(X, y, Xval, yval);
+# Try different SVM Parameters here
+sigma, C = dataset3Params(X, y, Xval, yval)
 
-% Train the SVM
-model= svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma));
-visualizeBoundary(X, y, model);
+model = svmTrain(X, y, C, kernelFunction = "gaussian", sigma=sigma)
+visualizeBoundary(X, y, model)
+plt.title('SVM Decision Boundary with sigma = %0.3f and C = %0.3f ' % (sigma, C))
+plt.show()
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
-'''
+input('Program paused. Press enter to continue.\n')
