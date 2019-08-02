@@ -3,6 +3,7 @@
 
 from readFile import *
 from processEmail import * 
+from emailFeatures import *
 
 ## ==================== Part 1: Email Preprocessing ====================
 #  To use an SVM to classify emails into Spam v.s. Non-Spam, you first need
@@ -24,26 +25,21 @@ print(word_indices, '\n')
 
 input('Program paused. Press enter to continue.\n')
 
+## ==================== Part 2: Feature Extraction ====================
+#  Now, you will convert each email into a vector of features in R^n. 
+
+print('\nExtracting features from sample email (emailSample1.txt)\n')
+
+# Extract Features
+features = emailFeatures(word_indices)
+
+# Print Stats
+print('Length of feature vector: %d\n' % (len(features)))
+print('Number of non-zero entries: %d\n' % sum(features > 0))
+
+input('Program paused. Press enter to continue.\n')
+
 '''
-%% ==================== Part 2: Feature Extraction ====================
-%  Now, you will convert each email into a vector of features in R^n. 
-%  You should complete the code in emailFeatures.m to produce a feature
-%  vector for a given email.
-
-fprintf('\nExtracting features from sample email (emailSample1.txt)\n');
-
-% Extract Features
-file_contents = readFile('emailSample1.txt');
-word_indices  = processEmail(file_contents);
-features      = emailFeatures(word_indices);
-
-% Print Stats
-fprintf('Length of feature vector: %d\n', length(features));
-fprintf('Number of non-zero entries: %d\n', sum(features > 0));
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% =========== Part 3: Train Linear SVM for Spam Classification ========
 %  In this section, you will train a linear classifier to determine if an
 %  email is Spam or Not-Spam.

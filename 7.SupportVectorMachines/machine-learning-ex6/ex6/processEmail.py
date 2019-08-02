@@ -40,6 +40,9 @@ def processEmail(email_contents):
     # Handle $ sign
     email_contents = re.sub('[$]+', 'dollar', email_contents)
 
+    # Handle handle apostrophe
+    email_contents = re.sub('[\']+', ' ', email_contents)
+
     # ========================== Tokenize Email ===========================
 
     # Tokenize and also get rid of any punctuation (any non alphanumeric characters)
