@@ -22,3 +22,6 @@
 - **5. Advice for Applying Machine Learning**
   - TOPIC: Model Se lection Train/Validation/Test Sets | Diagnosing Bias vs. Variance | Error analysis | Handling Skewed Data (Precision and Recall)
   - **PROGRAMMING EXERCISE 5: Regularized Linear Regression and Bias v.s. Variance**
+  **6. Support Vector Machines**
+  - TOPIC: Large Margin Classification | Kernels | SVMs in Practice
+  - **PROGRAMMING EXERCISE 6: Support Vector Machines**
