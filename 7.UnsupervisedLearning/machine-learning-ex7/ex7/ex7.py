@@ -5,6 +5,7 @@ from scipy.io import loadmat
 import numpy as np
 from findClosestCentroids import *
 from computeCentroids import *
+from runkMeans import * 
 
 ## ================= Part 1: Find Closest Centroids ====================
 #  To help you implement K-Means, we have divided the learning algorithm 
@@ -50,37 +51,32 @@ print('   [ 7.119387 3.616684 ]\n\n')
 
 input('Program paused. Press enter to continue.\n')
 
+## =================== Part 3: K-Means Clustering ======================
+#  After you have completed the two functions computeCentroids and
+#  findClosestCentroids, you have all the necessary pieces to run the
+#  kMeans algorithm. In this part, you will run the K-Means algorithm on
+#  the example dataset we have provided. 
+
+print('\nRunning K-Means clustering on example dataset.\n\n')
+
+# Settings for running K-Means
+max_iters = 10
+
+# For consistency, here we set centroids to specific values
+# but in practice you want to generate them automatically, such as by
+# settings them to be random examples (as can be seen in
+# kMeansInitCentroids).
+
+# Run K-Means algorithm. The 'true' at the end tells our function to plot
+# the progress of K-Means
+centroids, idx = runkMeans(X, initial_centroids, max_iters, True)
+
+print('\nK-Means Done.\n\n')
+
+input('Program paused. Press enter to continue.\n')
+
 
 '''
-%% =================== Part 3: K-Means Clustering ======================
-%  After you have completed the two functions computeCentroids and
-%  findClosestCentroids, you have all the necessary pieces to run the
-%  kMeans algorithm. In this part, you will run the K-Means algorithm on
-%  the example dataset we have provided. 
-%
-fprintf('\nRunning K-Means clustering on example dataset.\n\n');
-
-% Load an example dataset
-load('ex7data2.mat');
-
-% Settings for running K-Means
-K = 3;
-max_iters = 10;
-
-% For consistency, here we set centroids to specific values
-% but in practice you want to generate them automatically, such as by
-% settings them to be random examples (as can be seen in
-% kMeansInitCentroids).
-initial_centroids = [3 3; 6 2; 8 5];
-
-% Run K-Means algorithm. The 'true' at the end tells our function to plot
-% the progress of K-Means
-[centroids, idx] = runkMeans(X, initial_centroids, max_iters, true);
-fprintf('\nK-Means Done.\n\n');
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-
 %% ============= Part 4: K-Means Clustering on Pixels ===============
 %  In this exercise, you will use K-Means to compress an image. To do this,
 %  you will first run K-Means on the colors of the pixels in the image and
