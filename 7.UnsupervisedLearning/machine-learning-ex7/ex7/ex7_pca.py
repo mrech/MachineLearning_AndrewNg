@@ -3,12 +3,17 @@
 
 from scipy.io import loadmat
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D 
 import numpy as np
 from featureNormalize import featureNormalize
 from pca import pca
 from projectData import *
 from recoverData import *
 from displayData import displayData
+import matplotlib.image as mpimg
+from kMeansInitCentroids import *
+from runkMeans import *
+from plotDataPoints import *
 
 # ================== Part 1: Load Example Dataset  ===================
 #  We start this exercise by using a small dataset that is easily to
@@ -175,60 +180,68 @@ fig.show()
 
 input('Program paused. Press enter to continue.\n')
 
+## === Part 8(a): Optional (ungraded) Exercise: PCA for Visualization ===
+#  One useful application of PCA is to use it to visualize high-dimensional
+#  data. In the last K-Means exercise you ran K-Means on 3-dimensional
+#  pixel colors of an image. We first visualize this output in 3D, and then
+#  apply PCA to obtain a visualization in 2D.
 
-'''
-%% === Part 8(a): Optional (ungraded) Exercise: PCA for Visualization ===
-%  One useful application of PCA is to use it to visualize high-dimensional
-%  data. In the last K-Means exercise you ran K-Means on 3-dimensional
-%  pixel colors of an image. We first visualize this output in 3D, and then
-%  apply PCA to obtain a visualization in 2D.
+# Reload the image from the previous exercise and run K-Means on it
 
-close all; close all; clc
+#  Load an image of a bird
+A = mpimg.imread('bird_small.png')
 
-% Reload the image from the previous exercise and run K-Means on it
-% For this to work, you need to complete the K-Means assignment first
-A = double(imread('bird_small.png'));
+# Size of the image
+img_size = A.shape
 
-% If imread does not work for you, you can try instead
-%   load ('bird_small.mat');
+# Reshape the image into an Nx3 matrix where N = number of pixels.
+# Each row will contain the Red, Green and Blue pixel values
+# This gives us our dataset matrix X that we will use K-Means on.
+X = np.reshape(A, (img_size[0]*img_size[1], img_size[2]))
 
-A = A / 255;
-img_size = size(A);
-X = reshape(A, img_size(1) * img_size(2), 3);
-K = 16;
-max_iters = 10;
-initial_centroids = kMeansInitCentroids(X, K);
-[centroids, idx] = runkMeans(X, initial_centroids, max_iters);
+# Run your K-Means algorithm on this data
+K = 16
+max_iters = 10
 
-%  Sample 1000 random indexes (since working with all the data is
-%  too expensive. If you have a fast computer, you may increase this.
-sel = floor(rand(1000, 1) * size(X, 1)) + 1;
+# When using K-Means, it is important the initialize the centroids
+# randomly. 
 
-%  Setup Color Palette
-palette = hsv(K);
-colors = palette(idx(sel), :);
+initial_centroids = kMeansInitCentroids(X, K)
 
-%  Visualize the data and centroid memberships in 3D
-figure;
-scatter3(X(sel, 1), X(sel, 2), X(sel, 3), 10, colors);
-title('Pixel dataset plotted in 3D. Color shows centroid memberships');
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+# Run K-Means
+centroids, idx = runkMeans(X, initial_centroids, max_iters)
 
-%% === Part 8(b): Optional (ungraded) Exercise: PCA for Visualization ===
-% Use PCA to project this cloud to 2D for visualization
+#  Sample 1000 random indexes (since working with all the data is
+#  too expensive. If you have a fast computer, you may increase this.
+sel = np.floor(np.random.rand(1000, 1)*np.size(X,0)) + 1
+sel = sel.astype(int)
 
-% Subtract the mean to use PCA
-[X_norm, mu, sigma] = featureNormalize(X);
+#  Setup Color Palette
+colors = idx[sel, 0].flatten()
 
-% PCA and project the data to 2D
-[U, S] = pca(X_norm);
-Z = projectData(X_norm, U, 2);
+# Visualize the data and centroid memberships in 3D
 
-% Plot in 2D
-figure;
-plotDataPoints(Z(sel, :), idx(sel), K);
-title('Pixel dataset plotted in 2D, using PCA for dimensionality reduction');
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-'''
+fig = plt.figure()
+ax = fig.add_subplot(111, projection = '3d')
+ax.scatter(X[sel, 0], X[sel, 1], X[sel,2], c = colors, cmap = 'prism')
+ax.set_title('Pixel dataset plotted in 3D. Color shows centroid memberships')
+fig.show()
+
+input('Program paused. Press enter to continue.\n')
+
+## === Part 8(b): Optional (ungraded) Exercise: PCA for Visualization ===
+# Use PCA to project this cloud to 2D for visualization
+
+# Subtract the mean to use PCA
+X_norm, mu, sigma = featureNormalize(X)
+
+# PCA and project the data to 2D
+U, S = pca(X_norm)
+Z = projectData(X_norm, U, 2)
+
+# Plot in 2D
+plotDataPoints(Z[sel.flatten(), :], idx[sel,0], K)
+plt.title('Pixel dataset plotted in 2D, using PCA for dimensionality reduction');
+plt.show()
+
+input('Program paused. Press enter to continue.\n')
