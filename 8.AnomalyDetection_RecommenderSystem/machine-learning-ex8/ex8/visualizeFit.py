@@ -12,7 +12,7 @@ def visualizeFit(X, mu, sigma2):
     import matplotlib.pyplot as plt
 
     X1, X2 = np.meshgrid(np.arange(0, 35.5, 0.5), np.arange(0, 35.5, 0.5))
-    Z = multivariateGaussian(np.vstack((X2.flatten(), X1.flatten())).T, mu, sigma2)
+    Z = multivariateGaussian(np.vstack((X1.flatten(), X2.flatten())).T, mu, sigma2)
     Z = np.reshape(Z, np.shape(X1))
 
     fig, ax = plt.subplots()
@@ -22,7 +22,6 @@ def visualizeFit(X, mu, sigma2):
     ax.set_ylim(0,30)
     plt.xlabel('Latency (ms)')
     plt.ylabel('Throughput (mb/s)')
-    fig.show()
 
 
 
