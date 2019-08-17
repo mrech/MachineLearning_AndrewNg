@@ -11,10 +11,10 @@ def cofiCostFunc(params, Y, R, num_users, num_movies, num_features, lambda_par):
 
     # Unfold the U and W matrices from params
     X = np.reshape(params[:num_movies*num_features],
-                   (num_movies, num_features), order = 'F')
+                   (num_movies, num_features), order='F')
 
     Theta = np.reshape(params[num_movies*num_features:],
-                       (num_users, num_features), order = 'F')
+                       (num_users, num_features), order='F')
 
     # You need to return the following values correctly
     J = 0
@@ -33,14 +33,16 @@ def cofiCostFunc(params, Y, R, num_users, num_movies, num_features, lambda_par):
     #                 partial derivatives w.r.t. to each element of Theta
 
     # use element-wise multiplication with R matrix to set entries to 0
-    J = np.sum((np.dot(X, Theta.T)*R-Y*R)**2)/2
+    J = np.sum((np.dot(X, Theta.T)*R-Y*R)**2)/2 + \
+        (lambda_par/2 * np.sum(np.power(Theta, 2))) +\
+        (lambda_par/2 * np.sum(np.power(X, 2)))
 
-    X_grad = np.dot(np.dot(X, Theta.T)*R-Y*R, Theta)
-    Theta_grad = np.dot((np.dot(X, Theta.T)*R-Y*R).T, X)
+    X_grad = np.dot(np.dot(X, Theta.T)*R-Y*R, Theta) + lambda_par*X
+    Theta_grad = np.dot((np.dot(X, Theta.T)*R-Y*R).T, X) + lambda_par*Theta
 
     grad = []
-    grad.extend((list(X_grad.flatten(order = 'F')) +
-                 list(Theta_grad.flatten(order = 'F'))))
+    grad.extend((list(X_grad.flatten(order='F')) +
+                 list(Theta_grad.flatten(order='F'))))
 
     return J, grad
 
