@@ -5,6 +5,7 @@ from scipy.io import loadmat
 import numpy as np
 import matplotlib.pyplot as plt
 from cofiCostFunc import cofiCostFunc
+from checkCostFunction import checkCostFunction
 
 # =============== Part 1: Loading movie ratings dataset ================
 #  You will start by loading the movie ratings dataset to understand the
@@ -60,8 +61,8 @@ R = R[:num_movies, :num_users]
 
 # unroll the parameters into a single vector params
 params = []
-params.extend((list(X.flatten(order='F')) +
-               list(Theta.flatten(order='F'))))
+params.extend((list(X.flatten(order = 'F')) +
+               list(Theta.flatten(order = 'F'))))
 
 #  Evaluate cost function
 J = cofiCostFunc(params, Y, R, num_users, num_movies,
@@ -72,21 +73,20 @@ print('Cost at loaded parameters: %f '
 
 input('\nProgram paused. Press enter to continue.\n')
 
+## ============== Part 3: Collaborative Filtering Gradient ==============
+#  Once your cost function matches up with ours, you should now implement 
+#  the collaborative filtering gradient function. Specifically, you should 
+#  complete the code in cofiCostFunc.m to return the grad argument.
+  
+print('\nChecking Gradients (without regularization) ... \n')
+
+#  Check gradients by running checkNNGradients
+checkCostFunction()
+
+input('\nProgram paused. Press enter to continue.\n')
+
 
 '''           
-%% ============== Part 3: Collaborative Filtering Gradient ==============
-%  Once your cost function matches up with ours, you should now implement 
-%  the collaborative filtering gradient function. Specifically, you should 
-%  complete the code in cofiCostFunc.m to return the grad argument.
-%  
-fprintf('\nChecking Gradients (without regularization) ... \n');
-
-%  Check gradients by running checkNNGradients
-checkCostFunction;
-
-fprintf('\nProgram paused. Press enter to continue.\n');
-pause;
-
 
 %% ========= Part 4: Collaborative Filtering Cost Regularization ========
 %  Now, you should implement regularization for the cost function for 
