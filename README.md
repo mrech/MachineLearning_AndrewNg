@@ -20,8 +20,14 @@
   - **PROGRAMMING EXERCISE 3: Multi-class Classification and Neural Networks**'
   - **PROGRAMMING EXERCISE 4: Neural Networks Learning**
 - **5. Advice for Applying Machine Learning**
-  - TOPIC: Model Se lection Train/Validation/Test Sets | Diagnosing Bias vs. Variance | Error analysis | Handling Skewed Data (Precision and Recall)
+  - TOPIC: Model Selection Train/Validation/Test Sets | Diagnosing Bias vs. Variance | Error analysis | Handling Skewed Data (Precision and Recall)
   - **PROGRAMMING EXERCISE 5: Regularized Linear Regression and Bias v.s. Variance**
 - **6. Support Vector Machines**
   - TOPIC: Large Margin Classification | Kernels | SVMs in Practice
   - **PROGRAMMING EXERCISE 6: Support Vector Machines**
+- **7. Unsupervised Learning and Dimensionality Reduction**
+  - TOPIC: Unsupervised learning introduction | K-means algorithm | K-means for non-separated clusters | Optimization objective | Random initialization | Choosing the number of clusters | Dimensionality Reduction | Principal Component Anlysis algorithm | Data preprocessing | Reconstruction from compressed representation | Choosing the number of principal components | Advice for applying PCA
+  - **PROGRAMMING EXERCISE 7: K-means Clustering and Principal Component Analysis** 
+- **8. Anomaly Detection and Recommender Systems**
+  - TOPIC: Gaussian distribution | Parameter estimation | Density estimation | Anomaly detection algorithm | Developing and evaluating an anomaly detection system | Anomaly detection vs. supervised learning | Choosing what features to use | Multivariate Gaussian distribution | Content-based recommendations | Collaborative filtering Algorithm | Vectorization: Low rank matrix factorization | Mean Normalization
+  - **PROGRAMMING EXERCISE 8: Anomaly Detection and Recommender Systems**
