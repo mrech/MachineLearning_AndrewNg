@@ -44,6 +44,9 @@ def cofiCostFunc(params, Y, R, num_users, num_movies, num_features, lambda_par):
     grad.extend((list(X_grad.flatten(order='F')) +
                  list(Theta_grad.flatten(order='F'))))
 
+    # bad operand type for unary -: 'list'
+    grad = np.array(grad)
+    
     return J, grad
 
 
