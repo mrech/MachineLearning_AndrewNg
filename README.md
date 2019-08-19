@@ -31,3 +31,5 @@
 - **8. Anomaly Detection and Recommender Systems**
   - TOPIC: Gaussian distribution | Parameter estimation | Density estimation | Anomaly detection algorithm | Developing and evaluating an anomaly detection system | Anomaly detection vs. supervised learning | Choosing what features to use | Multivariate Gaussian distribution | Content-based recommendations | Collaborative filtering Algorithm | Vectorization: Low rank matrix factorization | Mean Normalization
   - **PROGRAMMING EXERCISE 8: Anomaly Detection and Recommender Systems**
+- **9. Large scale machine learning**
+  - TOPIC: Stochastic gradient descent | Mini-batch gradient descent | Online learning | Map-reduce and data parallelism
