@@ -33,3 +33,5 @@
   - **PROGRAMMING EXERCISE 8: Anomaly Detection and Recommender Systems**
 - **9. Large scale machine learning**
   - TOPIC: Stochastic gradient descent | Mini-batch gradient descent | Online learning | Map-reduce and data parallelism
+- **10. Application example: Photo OCR**
+  - TOPIC: Machine Learning pipelines | Sliding windows | Artificial data synthesis | Ceiling Analysis 
